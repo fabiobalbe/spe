@@ -24,4 +24,7 @@ if ($_POST["senha"] !== $_POST["confirmar-senha"]) {                 // VERIFICA
   die("As senhas não são inguais!");                                 // IDENTIDOS.
 }
 
+$senha_hash = password_hash($_POST["senha"], PASSWORD_DEFAULT);      // GERA O HASH DA SENHA.
+
 print_r($_POST);
+var_dump($senha_hash);

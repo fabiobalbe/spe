@@ -9,7 +9,6 @@ include_once 'topo.php';
 <body class="bg-success">
   <?php include_once 'barra-nav.php'; ?>
 
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <div class="container col-11 bg-light text-dark mx-auto p-3 mt-4 rounded-2 shadow altura-85">

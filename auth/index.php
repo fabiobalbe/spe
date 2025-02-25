@@ -12,16 +12,16 @@
         <label for="name">Nome</label>
         <input type="text" id="nome" name="nome">
       </div>
-<div>
+      <div>
         <label for="email">E-Mail</label>
         <input type="email" id="email" name="email">
       </div>
-<div>
+      <div>
         <label for="senha">Senha</label>
         <input type="password" id="senha" name="senha">
       </div>
       <div>
-         <label for="confirmar-senha">Confirmar Senha</label>
+        <label for="confirmar-senha">Confirmar Senha</label>
         <input type="password" id="confirmar-senha" name="confirmar-senha">
       </div>
         <div>
@@ -30,4 +30,3 @@
     </form>
   </body>
 </html>
-
