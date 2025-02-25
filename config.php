@@ -1,1 +1,1 @@
-<?php $nome_sistema = "SPE"; ?>
+<?php $nome_sistema = "SPE";
