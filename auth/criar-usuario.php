@@ -26,5 +26,7 @@ if ($_POST["senha"] !== $_POST["confirmar-senha"]) {                 // VERIFICA
 
 $senha_hash = password_hash($_POST["senha"], PASSWORD_DEFAULT);      // GERA O HASH DA SENHA.
 
+$mysqli = require __DIR__ . "/database.php";
+
 print_r($_POST);
 var_dump($senha_hash);
