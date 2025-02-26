@@ -21,12 +21,29 @@ if (!preg_match("/[0-9]/i", $_POST["senha"])) {                      // VERIFICA
   die("Senha deve ter ao menos um número!");
 }
 if ($_POST["senha"] !== $_POST["confirmar-senha"]) {                 // VERIFICA SE A SENHA E O CONFIRMAR-SENHA SÃO 
-  die("As senhas não são inguais!");                                 // IDENTIDOS.
+  die("As senhas não são inguais!");                                 // IDENTICOS.
 }
 
 $senha_hash = password_hash($_POST["senha"], PASSWORD_DEFAULT);      // GERA O HASH DA SENHA.
 
-$mysqli = require __DIR__ . "/database.php";
+$mysqli = require __DIR__ . "/database.php";                         // RETORNA O OBJETO mysqli COM A CONFIGURAÇÃO 
+                                                                     // DE CONEXÃO MYSQL.
+$sql = "INSERT INTO users (name, email, senha_hash)
+        VALUES (?, ?, ?)";
 
-print_r($_POST);
-var_dump($senha_hash);
+$stmt = $mysqli->stmt_init();                                        // INICIA O OBJETO DE DECLARAÇÃO PREPARADA.
+
+if (!$stmt->prepare($sql)) {                                         // SEGURA E EXIBE ERRO MYSQL.
+  die("Erro SQL:" . $mysqli->error);
+}
+
+$stmt->bind_param(                                                   // bind_param() VINCULA VALORES AOS "?". 
+  "sss",                                                             // DEFINE TIPOS DE VALORES STRING.
+  $_POST["nome"],
+  $_POST["email"],
+  $senha_hash
+);
+
+$stmt->execute();
+
+echo "Cadastro concluído.";
