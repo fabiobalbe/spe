@@ -27,7 +27,7 @@ if ($_POST["senha"] !== $_POST["confirmar-senha"]) {                 // VERIFICA
 $senha_hash = password_hash($_POST["senha"], PASSWORD_DEFAULT);      // GERA O HASH DA SENHA.
 
 $mysqli = require __DIR__ . "/database.php";                         // RETORNA O OBJETO mysqli COM A CONFIGURAÇÃO 
-                                                                     // DE CONEXÃO MYSQL.
+// DE CONEXÃO MYSQL.
 $sql = "INSERT INTO users (name, email, senha_hash)
         VALUES (?, ?, ?)";
 
@@ -44,6 +44,16 @@ $stmt->bind_param(                                                   // bind_par
   $senha_hash
 );
 
-$stmt->execute();
-
-echo "Cadastro concluído.";
+try {
+    if ($stmt->execute()) {                                         // TENTA EXECUTAR A QUERRY $sql.
+        echo "Cadastro concluído.";
+    }
+} catch (mysqli_sql_exception $e) {                                 // SE DÁ ERRO EXIBE MENSAGEM:
+    if ($e->getCode() === 1062) {                                   // SE O ERRO É DE DUPLICATA NO EMAIL. 
+        die("<b>Erro</b>: E-Mail já cadastrado!");
+    } else {                                                        // SE É OUTRO, EXIBE MENSAGEM DO MYSQL E ERRO.
+        die("Erro: " . $e->getMessage() .
+            " Código: " . $e->getCode()
+        );
+    }
+}
