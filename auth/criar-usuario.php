@@ -46,7 +46,8 @@ $stmt->bind_param(                                                   // bind_par
 
 try {
     if ($stmt->execute()) {                                         // TENTA EXECUTAR A QUERRY $sql.
-        echo "Cadastro concluído.";
+        header("Location: ../index.php");                           // REDIRECIONA PARA O PAINEL.
+        exit;
     }
 } catch (mysqli_sql_exception $e) {                                 // SE DÁ ERRO EXIBE MENSAGEM:
     if ($e->getCode() === 1062) {                                   // SE O ERRO É DE DUPLICATA NO EMAIL. 
