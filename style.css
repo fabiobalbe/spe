@@ -5,3 +5,9 @@ html, body {
 .altura-85 {
   height: 85vh;
 }
+
+ .logout:hover {
+  color: red !important;
+  text-decoration: underline;
+  
+} 

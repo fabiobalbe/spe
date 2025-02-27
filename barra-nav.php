@@ -19,6 +19,11 @@
           <a class="nav-link" href="#">Histórico de Consultas</a>
         </li>
       </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link logout fw-bold" href="auth/logout.php">Logout</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
