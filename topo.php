@@ -1,4 +1,6 @@
 <?php
+include_once 'auth/access_control.php';
+
 function titulo($ns, $np)
 {
   return $ns . ": " . $np;

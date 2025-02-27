@@ -1,6 +1,5 @@
 <?php
-
-session_start();
+define('ACCESS_ALLOWED', true);
 require 'auth/verifica.php';
 
 $nome_pagina = "Inicio";
