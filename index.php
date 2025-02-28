@@ -1,9 +1,9 @@
 <?php
 define('ACCESS_ALLOWED', true);
-require 'auth/verifica.php';
+require __DIR__ . '/auth/verifica.php';
 
 $nome_pagina = "Inicio";
-require 'config.php';
+require __DIR__ . 'config.php';
 
 require_once __DIR__ . '/componentes/topo.php';
 ?>
