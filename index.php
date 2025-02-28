@@ -1,10 +1,33 @@
 <?php
+
+// Define uma constante que libera acesso aos arquivos componentes incluidos abaixo.
 define('ACCESS_ALLOWED', true);
-require __DIR__ . '/auth/verifica.php';
 
+
+// Define o nome da página.
 $nome_pagina = "Inicio";
-require __DIR__ . 'config.php';
 
+
+// Autenticação de usuário com controle de erro do REQUIRE.
+$file = __DIR__ . '/auth/verifica.php';
+if (file_exists($file)) {
+  require $file;
+} else {
+  die("Erro crítico: arquivo de autenticação de usuário não encontrado.");
+  exit;
+}
+
+
+// Configurações globais com controle de erro do REQUIRE.
+$file = __DIR__ . '/config.php';
+if (file_exists($file)) {
+  require $file;
+} else {
+  die("Erro crítico: arquivo de configuração não encontrado.");
+  exit;
+}
+
+// Chama o componente TOPO.PHP.
 require_once __DIR__ . '/componentes/topo.php';
 ?>
 
