@@ -5,18 +5,18 @@ require 'auth/verifica.php';
 $nome_pagina = "Inicio";
 require 'config.php';
 
-include_once __DIR__ . '/componentes/topo.php';
+require_once __DIR__ . '/componentes/topo.php';
 ?>
 
 </head>
 
 <body class="bg-success">
 
-  <?php include_once __DIR__ . '/componentes/barra-nav.php'; ?>
+  <?php require_once __DIR__ . '/componentes/barra-nav.php'; ?>
 
   <div class="container col-11 bg-light text-dark mx-auto p-3 mt-4 rounded-2 shadow altura-85">
 
-    <?php include_once __DIR__ . '/paginas/painel.php'; ?>
+    <?php require_once __DIR__ . '/paginas/painel.php'; ?>
 
   </div>
 </body>
