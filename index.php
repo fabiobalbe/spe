@@ -36,6 +36,13 @@ require_once __DIR__ . '/componentes/topo.php';
 
   <?php require_once __DIR__ . '/componentes/barra-nav.php'; ?>
 
+  <?php
+  if (isset($_SESSION["mensagem-conteudo"])) {
+    include_once __DIR__ . '/componentes/mensagem.php';
+    unset($_SESSION["mensagem-conteudo"]);
+  }
+  ?>
+
   <div class="container col-11 bg-light text-dark mx-auto p-3 mt-4 rounded-2 shadow altura-85">
 
     <?php require_once __DIR__ . '/paginas/painel.php'; ?>

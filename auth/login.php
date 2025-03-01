@@ -17,14 +17,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
   if ($user) {
     if (password_verify($_POST["senha"], $user["senha_hash"])) {
-      
+
       session_start();
 
       session_regenerate_id();
 
       $_SESSION["user_id"] = $user["id"];
       $_SESSION["user_name"] = $user["name"];
-
+      $_SESSION["mensagem-tipo"] = "positivo";
+      $_SESSION["mensagem-conteudo"] = "Tudo certo no login!";
       header("Location: ../index.php");
       exit;
     }

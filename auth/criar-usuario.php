@@ -46,6 +46,9 @@ $stmt->bind_param(                                                   // bind_par
 
 try {
   if ($stmt->execute()) {                                            // TENTA EXECUTAR A QUERRY $sql.
+    session_start();
+    $_SESSION["mensagem-tipo"] = "positivo"; 
+    $_SESSION["mensagem-conteudo"] = "Usuário criado com sucesso!"; 
     header("Location: ../index.php");                                // REDIRECIONA PARA O PAINEL.
     exit;
   }
