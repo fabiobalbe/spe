@@ -46,10 +46,17 @@ $stmt->bind_param(                                                   // bind_par
 
 try {
   if ($stmt->execute()) {                                            // TENTA EXECUTAR A QUERRY $sql.
+
     session_start();
-    $_SESSION["mensagem-tipo"] = "positivo"; 
-    $_SESSION["mensagem-conteudo"] = "Usuário criado com sucesso!"; 
+
+    $_SESSION["mensagem-tipo"] = "positivo";
+
+    $_SESSION["mensagem-conteudo"] = "O usuário <strong>"
+      . $_POST["nome"]
+      . " </strong> foi criado com sucesso!";
+
     header("Location: ../index.php");                                // REDIRECIONA PARA O PAINEL.
+
     exit;
   }
 } catch (mysqli_sql_exception $e) {                                  // SE DÁ ERRO EXIBE MENSAGEM:

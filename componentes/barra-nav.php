@@ -21,6 +21,9 @@ include_once 'auth/access_control.php';
         <li class="nav-item">
           <a class="nav-link" href="#">Histórico de Consultas</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/auth/signup.php">Criar novo usuário</a>
+        </li>
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
