@@ -1,5 +1,5 @@
 <?php
-include_once 'auth/access_control.php'; 
+include_once 'auth/access_control.php';
 ?>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
