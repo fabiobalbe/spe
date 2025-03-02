@@ -1,37 +1,62 @@
-<?php require 'verifica.php'; ?>
+<?php
+
+$is_invalid = false;
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+  $mysqli = require __DIR__ . "/database.php";
+
+  $sql = sprintf(
+    "SELECT * FROM users WHERE email = '%s'",
+    $mysqli->real_escape_string($_POST['email'])
+  );
+
+  $result = $mysqli->query($sql);
+
+  $user = $result->fetch_assoc();
+
+  if ($user) {
+    if (password_verify($_POST["senha"], $user["senha_hash"])) {
+
+      session_start();
+
+      session_regenerate_id();
+
+      $_SESSION["user_id"] = $user["id"];
+      $_SESSION["user_name"] = $user["name"];
+      $_SESSION["mensagem-tipo"] = "positivo";
+      $_SESSION["mensagem-conteudo"] = "Tudo <strong>certo</strong> no login do " . $user['name'] . "!";
+      header("Location: ../index.php");
+      exit;
+    }
+  }
+  $is_invalid = true;
+}
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>Criar Usuário</title>
+  <title>Login</title>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-  <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js" defer></script>
-  <script src="/auth/js/valida-form-index.js" defer></script>
 </head>
 
 <body>
-  <h1>Criar Usuário</h1>
-  <form action="/auth/criar-usuario.php" method="POST" id="signup" novalidate>
-    <div>
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome">
-    </div>
-    <div>
-      <label for="email">E-Mail</label>
-      <input type="email" id="email" name="email">
-    </div>
-    <div>
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" name="senha">
-    </div>
-    <div>
-      <label for="confirmar-senha">Confirmar Senha</label>
-      <input type="password" id="confirmar-senha" name="confirmar-senha">
-    </div>
-    <div>
-      <button type="submit">Enviar</button>
-    </div>
+  <h1>Login</h1>
+
+  <?php if ($is_invalid): ?>
+    <em>Login Inválido</em>
+  <?php endif ?>
+
+  <form method="POST">
+    <label for="email">E-Mail</label>
+    <input type="email" name="email" id="email" value="<?= htmlspecialchars($_POST["email"] ?? "") ?>">
+
+    <label for="senha">Senha</label>
+    <input type="password" name="senha" id="senha">
+
+    <button>Login</button>
   </form>
 </body>
 
