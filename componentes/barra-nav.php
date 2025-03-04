@@ -1,5 +1,5 @@
 <?php
-include_once 'auth/access_control.php';
+include_once dirname(__DIR__) . '/auth/access_control.php';
 ?>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid col-11">
@@ -10,10 +10,10 @@ include_once 'auth/access_control.php';
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active text-decoration-underline" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" href="/index.php">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Pacientes</a>
+          <a class="nav-link" href="/novo-paciente/">Pacientes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Nova Consulta</a>
@@ -27,7 +27,7 @@ include_once 'auth/access_control.php';
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link logout fw-bold" href="auth/logout.php">Logout</a>
+        <a class="nav-link logout fw-bold" href="<?php __DIR__ ?>/auth/logout.php">Logout</a>
         </li>
       </ul>
     </div>

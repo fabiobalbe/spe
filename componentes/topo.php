@@ -1,5 +1,5 @@
 <?php
-include_once 'auth/access_control.php';
+include_once dirname(__DIR__) . '/auth/access_control.php';
 
 function titulo($ns, $np)
 {

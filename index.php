@@ -10,7 +10,7 @@ define('ACCESS_ALLOWED', true);
 $nome_pagina = "Inicio";
 
 // Autenticação de usuário com controle de erro do REQUIRE.
-$arquivo_verifica = __DIR__ . '/auth/verifica.php';
+$arquivo_verifica = dirname(__DIR__) . '/spe/auth/verifica.php';
 if (file_exists($arquivo_verifica)) {
   require $arquivo_verifica;
 } else {
@@ -18,7 +18,7 @@ if (file_exists($arquivo_verifica)) {
 }
 
 // Configurações globais com controle de erro do REQUIRE.
-$arquivo_config = __DIR__ . '/config.php';
+$arquivo_config = dirname(__DIR__) . '/spe/config.php';
 if (file_exists($arquivo_config)) {
   require $arquivo_config;
 } else {
@@ -26,7 +26,7 @@ if (file_exists($arquivo_config)) {
 }
 
 // Chama o componente TOPO.PHP.
-require_once __DIR__ . '/componentes/topo.php';
+require_once dirname(__DIR__) . '/spe/componentes/topo.php';
 
 ?>
 
@@ -34,18 +34,18 @@ require_once __DIR__ . '/componentes/topo.php';
 
 <body class="bg-success">
 
-  <?php require_once __DIR__ . '/componentes/barra-nav.php'; ?>
+  <?php require_once dirname(__DIR__) . '/spe/componentes/barra-nav.php'; ?>
 
   <?php
   if (isset($_SESSION["mensagem-conteudo"])) {
-    include_once __DIR__ . '/componentes/mensagem.php';
+    include_once dirname(__DIR__) . '/spe/componentes/mensagem.php';
     unset($_SESSION["mensagem-conteudo"]);
   }
   ?>
 
   <div class="container col-11 bg-light text-dark mx-auto p-3 mt-4 rounded-2 shadow altura-85">
 
-    <?php require_once __DIR__ . '/paginas/painel.php'; ?>
+    <?php require_once dirname(__DIR__) . '/spe/paginas/painel.php'; ?>
 
   </div>
 
