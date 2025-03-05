@@ -29,8 +29,8 @@
           <label for="sexo">Sexo</label>
           <select id="sexo" class="form-select" name="sexo">
             <option value="" selected>Escolher sexo...</option>
-            <option value="Feminino">Feminino</option>
-            <option value="Masculino">Masculino</option>
+            <option value="F">Feminino</option>
+            <option value="M">Masculino</option>
           </select>
         </div>
       </div>

@@ -30,6 +30,75 @@ if (!empty($_POST["email"])) {
 }
 if (!empty($_POST["tel"])) {
   if (!validarTelefone($_POST["tel"])) {
-    die ("O telefone está incorreto!");
+    die("O telefone está incorreto!");
   }
+}
+
+$mysqli = require dirname(__DIR__) . "/auth/database.php";
+
+$sql = "INSERT INTO pacientes
+        (
+          nome,
+          data_nascimento,
+          telefone,
+          email,
+          sexo,
+          cpf,
+          tipo_sanguineo,
+          alergias,
+          historico_medico,
+          observacoes,
+          ativo
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+$stmt = $mysqli->stmt_init();
+
+if (!$stmt->prepare($sql)) {
+  die("Erro SQL: " . $mysqli->error);
+}
+
+// Definir os valores
+$nome = $_POST["nome"];
+$data_nascimento = $_POST["data-nascimento"];
+$sexo = $_POST["sexo"];
+$tipo_sanguineo = $_POST["fator-rh"];
+$cpf = $_POST["cpf"] ?? "";
+$email = $_POST["email"] ?? "";
+$telefone = $_POST["telefone"] ?? "";
+$alergias = $_POST["alergias"] ?? "";
+$observacoes = $_POST["observacoes"] ?? "";
+$historico_medico = $_POST["historico_medico"] ?? "";
+$ativo = 1;
+
+// Bind dos parâmetros
+$stmt->bind_param(
+  "ssssssssssi",  // Tipos dos dados
+  $nome,
+  $data_nascimento,
+  $telefone,
+  $email,
+  $sexo,
+  $cpf,
+  $tipo_sanguineo,
+  $alergias,
+  $historico_medico,
+  $observacoes,
+  $ativo
+);
+
+if ($stmt->execute()) {
+
+  session_start();
+
+  $_SESSION["mensagem-tipo"] = "positivo";
+
+  $_SESSION["mensagem-conteudo"] = "O paciente <strong>"
+    . $_POST["nome"]
+    . " </strong> foi cadastrado com sucesso!";
+
+  header("Location: ../index.php");
+
+  exit;
+} else {
+  die("Erro ao cadastrar paciente: " . $stmt->error);
 }
