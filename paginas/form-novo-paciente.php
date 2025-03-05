@@ -13,7 +13,7 @@
 <!-- Formulário -->
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
-    <form action="/processa-paciente.php" method="POST" id="signup" novalidate class="w-100">
+  <form action="/novo-paciente/processa-paciente.php" method="POST" id="signup" novalidate class="w-100">
 
       <!-- Primeira Linha -->
       <div class="row g-2">
