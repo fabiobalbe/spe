@@ -80,6 +80,9 @@
         <div class="col-3">
           <label for="email">E-Mail</label>
           <input type="email" class="form-control" id="email" name="email" placeholder="nome@provedor.com">
+          <div class="invalid-feedback">
+            Email inválido!
+          </div>
         </div>
         <div class="col-3">
           <label for="tel">Telefone</label>
