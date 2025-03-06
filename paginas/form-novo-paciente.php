@@ -73,6 +73,9 @@
         <div class="col-3">
           <label for="cpf">CPF</label>
           <input type="text" class="form-control" id="cpf" name="cpf" placeholder="000.000.000-00">
+          <div class="invalid-feedback">
+            CPF inválido!
+          </div>
         </div>
         <div class="col-3">
           <label for="email">E-Mail</label>
@@ -81,6 +84,9 @@
         <div class="col-3">
           <label for="tel">Telefone</label>
           <input type="tel" class="form-control" id="tel" name="tel" placeholder="(31) 9-1111-0000">
+          <div class="invalid-feedback">
+            Telefone inválido!
+          </div>
         </div>
       </div>
 
