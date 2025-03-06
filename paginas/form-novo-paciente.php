@@ -1,5 +1,4 @@
 <?php include_once dirname(__DIR__) . '/auth/access_control.php'; ?>
-
 <!-- Título e botão cancelar -->
 <div class="row">
   <div class="col-12 d-flex">
@@ -11,27 +10,43 @@
 </div>
 
 <!-- Formulário -->
+<script src="/auth/js/valida-form-paciente.js" defer></script>
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
-  <form action="/novo-paciente/processa-paciente.php" method="POST" id="signup" novalidate class="w-100">
-
+    <form action="/novo-paciente/processa-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
+      
       <!-- Primeira Linha -->
       <div class="row g-2">
         <div class="col-6">
           <label for="nome">Nome</label>
-          <input type="text" class="form-control" id="nome" name="nome" placeholder="Nome completo do paciente">
+          <input 
+            type="text" 
+            class="form-control" 
+            id="nome" 
+            name="nome" 
+            placeholder="Nome completo do paciente" 
+            required>
+          <div class="invalid-feedback">
+            O nome é obrigatório e deve ter pelo menos 3 caracteres.
+          </div>
         </div>
         <div class="col-3">
           <label for="data-nascimento">Data de nascimento</label>
-          <input type="date" class="form-control" id="data-nascimento" name="data-nascimento">
+          <input type="date" class="form-control" id="data-nascimento" name="data-nascimento" required>
+          <div class="invalid-feedback">
+            Informe a data de nascimento.
+          </div>
         </div>
         <div class="col-3">
           <label for="sexo">Sexo</label>
-          <select id="sexo" class="form-select" name="sexo">
+          <select id="sexo" class="form-select" name="sexo" required>
             <option value="" selected>Escolher sexo...</option>
             <option value="F">Feminino</option>
             <option value="M">Masculino</option>
           </select>
+          <div class="invalid-feedback">
+            Selecione o sexo do paciente.
+          </div>
         </div>
       </div>
 
@@ -39,7 +54,7 @@
       <div class="row mt-1 g-2">
         <div class="col-3">
           <label for="fator-rh">Tipo sanguíneo</label>
-          <select id="fator-rh" class="form-select" name="fator-rh">
+          <select id="fator-rh" class="form-select" name="fator-rh" required>
             <option value="" selected>Escolher Fator RH...</option>
             <option>A+</option>
             <option>A-</option>
@@ -51,6 +66,9 @@
             <option>O-</option>
             <option>Desconhecido</option>
           </select>
+          <div class="invalid-feedback">
+            Selecione o fator RH.
+          </div>
         </div>
         <div class="col-3">
           <label for="cpf">CPF</label>
