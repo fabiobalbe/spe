@@ -10,7 +10,7 @@
 </div>
 
 <!-- Formulário -->
-<script src="/auth/js/valida-form-paciente.js" defer></script>
+<script src="/novo-paciente/valida-form-paciente.js" defer></script>
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
     <form action="/novo-paciente/processa-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
