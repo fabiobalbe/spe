@@ -62,8 +62,17 @@ document.addEventListener("DOMContentLoaded", function() {
             cpf.classList.add("is-invalid");
             isValid = false;
           } else {
-            cpf.classList.remove("is-invalid");
-            cpf.classList.add("is-valid");
+            return fetch("../api/api-existe-cpf.php?cpf=" + encodeURIComponent(cpf.value))
+              .then(response => response.json())
+              .then(data => {
+                if (data.isValid) {
+                  cpf.classList.add("is-invalid");
+                  isValid = false;
+                } else {
+                  cpf.classList.remove("is-invalid");
+                  cpf.classList.add("is-valid");
+                }
+              });
           }
         })
         .catch(error => {
@@ -71,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
           cpf.classList.add("is-invalid");
           isValid = false;
         });
+
       promises.push(cpfPromise);
     } else {
       cpf.classList.remove("is-invalid");
