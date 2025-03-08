@@ -4,7 +4,7 @@
   <div class="col-12 d-flex">
     <h2>Cadastro de novo paciente:</h2>
     <div class="d-flex ms-auto">
-      <button type="button" class="btn btn-danger">Cancelar</button>
+      <button type="button" class="btn btn-danger" onclick="history.back()">Cancelar</button>
     </div>
   </div>
 </div>
