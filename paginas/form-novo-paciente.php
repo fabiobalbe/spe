@@ -14,17 +14,17 @@
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
     <form action="/novo-paciente/processa-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
-      
+
       <!-- Primeira Linha -->
       <div class="row g-2">
         <div class="col-6">
           <label for="nome">Nome</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="nome" 
-            name="nome" 
-            placeholder="Nome completo do paciente" 
+          <input
+            type="text"
+            class="form-control"
+            id="nome"
+            name="nome"
+            placeholder="Nome completo do paciente"
             required>
           <div class="invalid-feedback">
             O nome é obrigatório e deve ter pelo menos 3 caracteres.
@@ -123,3 +123,4 @@
     </form>
   </div>
 </div>
+<script src="../biblioteca/before-unload.js" defer></script>
