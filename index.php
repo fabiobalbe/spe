@@ -62,9 +62,32 @@ require_once dirname(__DIR__) . '/spe/componentes/topo.php';
 
   <!----------------------------------------- CONTAINER DE CONTEÚDO PRINCIPAL --------------------------------------->
   <div class="container col-11 bg-light text-dark mx-auto p-3 mt-4 rounded-2 shadow altura-85">
+    <?php
 
-    <?php require_once dirname(__DIR__) . '/spe/paginas/painel.php'; ?>
+    $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
+    require dirname(__DIR__) . '/spe/biblioteca/router.php';
 
+    $router = new Router;
+
+    $router->add("/", function () {
+      include_once dirname(__DIR__) . '/spe/paginas/painel.php'; 
+    });
+
+    $router->add("/pacientes", function () {
+      include_once dirname(__DIR__) . '/spe/paginas/form-novo-paciente.php'; 
+    });
+
+    $router->add("/nova-consulta", function () {
+      echo "NOVA CONSULTAS";
+    });
+
+    $router->add("/historico", function () {
+      echo "HISTÓRICO DE CONSULTAS";
+    });
+    
+    $router->dispatch($path);
+
+    ?>
   </div>
 
 </body>

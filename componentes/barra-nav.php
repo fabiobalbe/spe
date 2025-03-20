@@ -3,23 +3,23 @@ include_once dirname(__DIR__) . '/auth/access_control.php';
 ?>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid col-11">
-    <a class="navbar-brand" href="index.php"><b><?php echo $nome_sistema ?></b></a>
+    <a class="navbar-brand" href="/"><b><?php echo $nome_sistema ?></b></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" href="/index.php">Home</a>
+          <a class="nav-link active" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/novo-paciente/">Pacientes</a>
+          <a class="nav-link" href="/pacientes">Pacientes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Nova Consulta</a>
+          <a class="nav-link" href="/nova-consulta">Nova Consulta</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Histórico de Consultas</a>
+          <a class="nav-link" href="/historico">Histórico de Consultas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/auth/signup.php">Criar novo usuário</a>
