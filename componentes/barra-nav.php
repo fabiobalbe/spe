@@ -22,12 +22,12 @@ require_once dirname(__DIR__) . '/auth/access_control.php';
           <a class="nav-link" href="/historico">Histórico de Consultas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/auth/signup.php">Criar novo usuário</a>
+          <a class="nav-link" href="/signup">Criar novo usuário</a>
         </li>
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-        <a class="nav-link logout fw-bold" href="<?php __DIR__ ?>/auth/logout.php">Logout</a>
+        <a class="nav-link logout fw-bold" href="/logout">Logout</a>
         </li>
       </ul>
     </div>

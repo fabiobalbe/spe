@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__DIR__) . '/auth/access_control.php';
+require_once dirname(__DIR__) . '/auth/verifica.php';
 
 if (empty($_POST["nome"])) {                                         // VERIFICA SE O NOME E EMAIL ESTÃO PREENCHIDOS.
   die("Faltou o nome!");
@@ -58,7 +58,7 @@ try {
       . $_POST["nome"]
       . " </strong> foi criado com sucesso!";
 
-    header("Location: ../index.php");                                // REDIRECIONA PARA O PAINEL.
+    header("Location: ../");                                // REDIRECIONA PARA O PAINEL.
 
     exit;
   }

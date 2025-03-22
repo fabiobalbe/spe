@@ -85,6 +85,15 @@ require_once dirname(__DIR__) . '/spe/componentes/topo.php';
       echo "HISTÓRICO DE CONSULTAS";
     });
     
+    $router->add("/logout", function () {
+      include_once dirname(__DIR__) . "/spe/auth/logout.php";
+    });
+
+    $router->add("/signup", function () {
+      header("Location: /auth/signup.php");
+      exit();
+    });
+
     $router->dispatch($path);
 
     ?>

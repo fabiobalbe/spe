@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/auth/access_control.php';
+require_once dirname(__DIR__) . '/auth/verifica.php';
 require_once dirname(__DIR__) . "/biblioteca/valida-cpf.php";
 require_once dirname(__DIR__) . "/biblioteca/valida-telefone.php";
 
@@ -96,7 +96,7 @@ if ($stmt->execute()) {
     . $_POST["nome"]
     . " </strong> foi cadastrado com sucesso!";
 
-  header("Location: ../index.php");
+  header("Location: ../");
 
   exit;
 } else {
