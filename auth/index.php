@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       $_SESSION["user_name"] = $user["name"];
       $_SESSION["mensagem-tipo"] = "positivo";
       $_SESSION["mensagem-conteudo"] = "Tudo <strong>certo</strong> no login do " . $user['name'] . "!";
-      header("Location: ../index.php");
+      header("Location: ../");
       exit;
     }
   }

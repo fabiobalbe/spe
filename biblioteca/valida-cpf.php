@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . '/auth/access_control.php';
 
 function validarCPF($cpf)
 {

@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__) . '/auth/access_control.php';
 require_once dirname(__DIR__) . "/biblioteca/valida-telefone.php";
 
 if (isset($_GET["tel"])) {

@@ -1,4 +1,7 @@
 <?php
+
+require_once dirname(__DIR__) . '/auth/access_control.php';
+
 if (empty($_POST["nome"])) {                                         // VERIFICA SE O NOME E EMAIL ESTÃO PREENCHIDOS.
   die("Faltou o nome!");
 }

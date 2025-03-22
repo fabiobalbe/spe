@@ -1,4 +1,6 @@
-<?php include_once dirname(__DIR__) . '/auth/access_control.php'; ?>
+<?php
+require_once dirname(__DIR__) . '/auth/access_control.php';
+?>
 
 <span>Bem vindo <?= $_SESSION["user_name"] ?></span>
 <div class="container text-center" style="height: 100%;">

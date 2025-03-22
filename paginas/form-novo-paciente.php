@@ -1,4 +1,6 @@
-<?php include_once dirname(__DIR__) . '/auth/access_control.php'; ?>
+<?php
+require_once dirname(__DIR__) . '/auth/access_control.php';
+?>
 <!-- Título e botão cancelar -->
 <div class="row">
   <div class="col-12 d-flex">

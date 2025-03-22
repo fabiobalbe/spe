@@ -1,5 +1,7 @@
 <?php
 
+require_once dirname(__DIR__) . '/auth/access_control.php';
+
 function getMensagemClasse()
 {
   if (isset($_SESSION["mensagem-tipo"])) {

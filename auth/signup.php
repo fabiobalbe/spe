@@ -1,4 +1,6 @@
-<?php require 'verifica.php'; ?>
+<?php
+require_once dirname(__DIR__) . '/auth/access_control.php';
+?>
 <!DOCTYPE html>
 <html>
 
