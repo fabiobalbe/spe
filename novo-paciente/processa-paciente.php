@@ -88,7 +88,6 @@ $stmt->bind_param(
 
 if ($stmt->execute()) {
 
-  session_start();
 
   $_SESSION["mensagem-tipo"] = "positivo";
 
