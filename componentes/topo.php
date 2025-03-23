@@ -9,7 +9,7 @@ require_once dirname(__DIR__) . '/auth/access_control.php';
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title><?php echo $nome_sistema . ": " . $titulo_pagina; ?></title>
+  <title><?php echo NOME_SISTEMA . ": " . $titulo_pagina; ?></title>
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
