@@ -1,12 +1,6 @@
 <?php
 require_once dirname(__DIR__) . '/auth/access_control.php';
-
-function titulo($ns, $np)
-{
-  return $ns . ": " . $np;
-}
 ?>
-
 <!doctype html>
 <html lang="pt-br">
 
@@ -15,7 +9,7 @@ function titulo($ns, $np)
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title><?php echo titulo($nome_sistema, $nome_pagina) ?></title>
+  <title><?php echo $nome_sistema . ": " . $titulo_pagina; ?></title>
 
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
