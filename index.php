@@ -29,13 +29,13 @@ if (file_exists($arquivo_verifica)) {
 // Configurações globais com controle de erro do REQUIRE.
 $arquivo_config = dirname(__DIR__) . '/spe/config.php';
 if (file_exists($arquivo_config)) {
-  require $arquivo_config;
+  require_once $arquivo_config;
 } else {
   die("Erro crítico: arquivo de configuração não encontrado.");
 }
 
 $path = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
-require dirname(__DIR__) . '/spe/biblioteca/router.php';
+require_once dirname(__DIR__) . '/spe/biblioteca/router.php';
 
 $router = new Router;
 
