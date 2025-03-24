@@ -5,32 +5,53 @@ require_once dirname(__DIR__) . "/biblioteca/valida-telefone.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
 if (empty($_POST["nome"])) {
-  die("Faltou o nome!");
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
+  header("Location: /pacientes");
+  exit;
 }
 if (empty($_POST["data-nascimento"])) {
-  die("Faltou a data de nascimento!");
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
+  header("Location: /pacientes");
+  exit;
 }
 if (empty($_POST["sexo"])) {
-  die("Faltou o sexo!");
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
+  header("Location: /pacientes");
+  exit;
 }
 if (empty($_POST["fator-rh"])) {
-  die("Faltou o tipo sanguineo!");
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
+  header("Location: /pacientes");
+  exit;
 }
 
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
 if (!empty($_POST["cpf"])) {
   if (!validarCPF($_POST["cpf"])) {
-    die("O CPF está incorreto!");
+    $_SESSION["mensagem-tipo"] = "neutro";
+    $_SESSION["mensagem-conteudo"] = "CPF inválido!.";
+    header("Location: /pacientes");
+    exit;
   }
 }
 if (!empty($_POST["email"])) {
   if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-    die("O endereço de E-Mail está incorreto!");
+    $_SESSION["mensagem-tipo"] = "neutro";
+    $_SESSION["mensagem-conteudo"] = "Endereço de e-mail incorreto.";
+    header("Location: /pacientes");
+    exit;
   }
 }
 if (!empty($_POST["tel"])) {
   if (!validarTelefone($_POST["tel"])) {
-    die("O telefone está incorreto!");
+    $_SESSION["mensagem-tipo"] = "neutro";
+    $_SESSION["mensagem-conteudo"] = "Telefone incorreto.";
+    header("Location: /pacientes");
+    exit;
   }
 }
 
@@ -54,7 +75,11 @@ $sql = "INSERT INTO pacientes
 $stmt = $mysqli->stmt_init();
 
 if (!$stmt->prepare($sql)) {
-  die("Erro SQL: " . $mysqli->error);
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
+  header("Location: /pacientes");
+  exit;
+
 }
 
 // Definir os valores
@@ -90,14 +115,14 @@ if ($stmt->execute()) {
 
 
   $_SESSION["mensagem-tipo"] = "positivo";
-
   $_SESSION["mensagem-conteudo"] = "O paciente <strong>"
     . $_POST["nome"]
     . " </strong> foi cadastrado com sucesso!";
-
-  header("Location: ../");
-
+  header("Location: /");
   exit;
 } else {
-  die("Erro ao cadastrar paciente: " . $stmt->error);
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "Erro ao cadastrar paciente: " . $stmt->error;
+  header("Location: /pacientes");
+  exit;
 }
