@@ -3,7 +3,7 @@ html, body {
 }
 
 .altura-85 {
-  height: 85vh;
+  min-height: 85%;
 }
 
  .logout:hover {
