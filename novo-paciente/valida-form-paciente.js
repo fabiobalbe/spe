@@ -88,16 +88,18 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Validação do Email
-    function isEmailValid(email) {
-      const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return regex.test(email);
-    }
-    if (!isEmailValid(email.value)) {
-      email.classList.add("is-invalid");
-      isValid = false;
-    } else {
-      email.classList.remove("is-invalid");
-      email.classList.add("is-valid");
+    if (email.value.trim() !== "") {
+      function isEmailValid(email) {
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        return regex.test(email);
+      }
+      if (!isEmailValid(email.value)) {
+        email.classList.add("is-invalid");
+        isValid = false;
+      } else {
+        email.classList.remove("is-invalid");
+        email.classList.add("is-valid");
+      }
     }
 
     // Validação do Telefone
