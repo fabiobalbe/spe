@@ -35,7 +35,6 @@ require_once dirname(__DIR__) . '/spe/biblioteca/router.php';
 
 $router = new Router;
 
-echo DIR_ABS;
 //------------------------------------------------------ ROTAS ------------------------------------------------------//
 //MOVER PARA OUTRO ARQUIVO DEPOIS!
 $router->add("/", function () {
