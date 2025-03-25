@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/auth/access_control.php';
+require_once DIR_ABS . '/spe/auth/access_control.php';
 ?>
 <!-- Título e botão cancelar -->
 <div class="row">
@@ -15,7 +15,7 @@ require_once dirname(__DIR__) . '/auth/access_control.php';
 <script src="/novo-paciente/valida-form-paciente.js" defer></script>
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
-    <form action="/novo-paciente/processa-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
+    <form action="/paginas/novo-paciente/processa-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
       <?php
       function getFormData($campo, $default = '')
       {

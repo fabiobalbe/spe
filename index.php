@@ -35,7 +35,7 @@ require_once dirname(__DIR__) . '/spe/biblioteca/router.php';
 
 $router = new Router;
 
-
+echo DIR_ABS;
 //------------------------------------------------------ ROTAS ------------------------------------------------------//
 //MOVER PARA OUTRO ARQUIVO DEPOIS!
 $router->add("/", function () {
@@ -43,12 +43,12 @@ $router->add("/", function () {
 }, "Painel");
 
 $router->add("/pacientes", function () {
-  include_once dirname(__DIR__) . '/spe/paginas/form-novo-paciente.php';
-}, "Novo Paciente");
+  include_once dirname(__DIR__) . '/spe/paginas/pacientes.php';
+}, "Pacientes");
 
-$router->add("/nova-consulta", function () {
-  echo "NOVA CONSULTA";
-}, "Nova Consulta");
+$router->add("/pacientes/novo-paciente", function () {
+  include_once dirname(__DIR__) . '/spe/paginas/novo-paciente/form-novo-paciente.php';
+}, "Cadastro de novo paciente");
 
 $router->add("/historico", function () {
   echo "HISTÓRICO DE CONSULTAS";

@@ -1,35 +1,35 @@
 <?php
-require_once dirname(__DIR__) . '/auth/verifica.php';
-require_once dirname(__DIR__) . "/biblioteca/valida-cpf.php";
-require_once dirname(__DIR__) . "/biblioteca/valida-telefone.php";
+require_once '../../auth/verifica.php';
+require_once "../../biblioteca/valida-cpf.php";
+require_once "../../biblioteca/valida-telefone.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
 if (empty($_POST["nome"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /pacientes");
+  header("Location: /pacientes/novo-paciente");
   exit;
 }
 if (empty($_POST["data-nascimento"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /pacientes");
+  header("Location: /pacientes/novo-paciente");
   exit;
 }
 if (empty($_POST["sexo"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /pacientes");
+  header("Location: /pacientes/novo-paciente");
   exit;
 }
 if (empty($_POST["fator-rh"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /pacientes");
+  header("Location: /pacientes/novo-paciente");
   exit;
 }
 
@@ -39,7 +39,7 @@ if (!empty($_POST["cpf"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF inválido!";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /pacientes");
+    header("Location: /pacientes/novo-paciente");
     exit;
   }
 }
@@ -48,7 +48,7 @@ if (!empty($_POST["email"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "Endereço de e-mail incorreto.";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /pacientes");
+    header("Location: /pacientes/novo-paciente");
     exit;
   }
 }
@@ -57,12 +57,12 @@ if (!empty($_POST["tel"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "Telefone incorreto.";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /pacientes");
+    header("Location: /pacientes/novo-paciente");
     exit;
   }
 }
 
-$mysqli = require dirname(__DIR__) . "/auth/database.php";
+$mysqli = require  "../../auth/database.php";
 
 $sql = "INSERT INTO pacientes
         (
@@ -85,7 +85,7 @@ if (!$stmt->prepare($sql)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /pacientes");
+  header("Location: /pacientes/novo-paciente");
   exit;
 
 }
@@ -125,12 +125,12 @@ if ($stmt->execute()) {
   $_SESSION["mensagem-conteudo"] = "O paciente <strong>"
     . $_POST["nome"]
     . " </strong> foi cadastrado com sucesso!";
-  header("Location: /");
+  header("Location: /pacientes");
   exit;
 } else {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "Erro ao cadastrar paciente: " . $stmt->error;
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /pacientes");
+  header("Location: /pacientes/novo-paciente");
   exit;
 }
