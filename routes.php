@@ -14,8 +14,13 @@ $router->add("/pacientes/novo-paciente", function () {
 }, "Cadastro de novo paciente");
 
 $router->add("/paciente/:id", function ($id) {
-  $_GET['id'] = $id;
-  include_once dirname(__DIR__) . '/spe/paginas/paciente/paciente.php';
+    if (!ctype_digit($id) || $id <= 0) {
+        header("HTTP/1.0 400 Bad Request");
+        echo "ID do paciente deve ser um número inteiro positivo";
+        exit;
+    }
+    $idPaciente = (int)$id; // Força conversão para inteiro
+    include_once dirname(__DIR__) . '/spe/paginas/paciente/paciente.php';
 }, "Página do paciente");
 
 $router->add("/historico", function () {

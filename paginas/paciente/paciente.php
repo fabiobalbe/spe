@@ -4,7 +4,7 @@ require_once DIR_ABS . '/spe/biblioteca/calcula-idade.php';
 
 $mysqli = require_once DIR_ABS . "/spe/auth/database.php";
 
-$sql = "SELECT * FROM pacientes WHERE id = " . htmlspecialchars($id);
+$sql = "SELECT * FROM pacientes WHERE id = ?";
 
 $stmt = $mysqli->stmt_init();
 
@@ -12,13 +12,20 @@ if (!$stmt->prepare($sql)) {
   die("Erro de conexão com o DB!");
 }
 
+$stmt->bind_param("i", $idPaciente);
+
 $stmt->execute();
 
 $result = $stmt->get_result();
 
+$row = $result->fetch_assoc();
+
 $stmt->close();
 
-$row = $result->fetch_assoc();
+if (!$row) {
+  echo "Paciente não encontrado";
+  exit;
+}
 
 ?>
 <!-- Título e botão cancelar -->
@@ -36,4 +43,4 @@ $row = $result->fetch_assoc();
 
 </div>
 
-<span><?php echo $row['nome']; ?></span>
+<span><?php echo htmlspecialchars($row['nome']); ?></span>
