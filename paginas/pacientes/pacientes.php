@@ -4,7 +4,7 @@ require_once DIR_ABS . '/spe/biblioteca/calcula-idade.php';
 
 $mysqli = require_once DIR_ABS . "/spe/auth/database.php";
 
-$sql = "SELECT * FROM pacientes";
+$sql = "SELECT id, nome, data_nascimento, telefone FROM pacientes";
 
 $stmt = $mysqli->stmt_init();
 
