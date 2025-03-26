@@ -2,9 +2,17 @@
 require_once DIR_ABS . '/spe/auth/access_control.php';
 require_once DIR_ABS . '/spe/biblioteca/calcula-idade.php';
 
+$id = $_GET['id'] ?? null;
+
+if ($id) {
+    echo "ID do paciente: " . htmlspecialchars($id);
+} else {
+    echo "Nenhum ID informado.";
+}
+
 $mysqli = require_once DIR_ABS . "/spe/auth/database.php";
 
-$sql = "SELECT * FROM pacientes WHERE id = 1";
+$sql = "SELECT * FROM pacientes WHERE id = " . htmlspecialchars($id);
 
 $stmt = $mysqli->stmt_init();
 
