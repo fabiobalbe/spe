@@ -13,6 +13,10 @@ $router->add("/pacientes/novo-paciente", function () {
   include_once dirname(__DIR__) . '/spe/paginas/novo-paciente/form-novo-paciente.php';
 }, "Cadastro de novo paciente");
 
+$router->add("/paciente", function () {
+  include_once dirname(__DIR__) . '/spe/paginas/paciente/paciente.php';
+}, "Página do paciente");
+
 $router->add("/historico", function () {
   echo "HISTÓRICO DE CONSULTAS";
 }, "Historico de consultas");
