@@ -1,5 +1,23 @@
 <?php
 require_once DIR_ABS . '/spe/auth/access_control.php';
+require_once DIR_ABS . '/spe/biblioteca/calcula-idade.php';
+
+$mysqli = require_once DIR_ABS . "/spe/auth/database.php";
+
+$sql = "SELECT * FROM pacientes";
+
+$stmt = $mysqli->stmt_init();
+
+if (!$stmt->prepare($sql)) {
+  die("Erro de conexão com o DB!");
+}
+
+$stmt->execute();
+
+$result = $stmt->get_result();
+
+$stmt->close();
+
 ?>
 
 <!-- Título e botão cancelar -->
@@ -17,8 +35,6 @@ require_once DIR_ABS . '/spe/auth/access_control.php';
 
 </div>
 
-
-
 <!-- Tabela -->
 <div class="row mt-3 table-responsive link-underline-opacity-0">
   <div class="col-12 d-flex mx-auto">
@@ -35,47 +51,34 @@ require_once DIR_ABS . '/spe/auth/access_control.php';
       </thead>
       <tbody>
 
-        <tr onclick="window.location.href='/paciente/fabio-portela-balbe';"
-          style="cursor: pointer;">
-          <td>Fábio Portela Balbé</td>
-          <td>29 anos</td>
-          <td>
-            <a class="link-success link-underline-opacity-100-hover"
-              href="https://wa.me/55997112242"
-              target="_blank">
-              (55) 997112242
-            </a>
-          </td>
-          <td>29/02/2024</td>
-        </tr>
+        <?php
+        // Itera sobre os resultados
+        while ($row = $result->fetch_assoc()) {
 
-        <tr>
-          <td>Fidelis Pinto</td>
-          <td>62 anos</td>
-          <td><a class="link-success link-underline-opacity-100-hover" href="https://wa.me/31999990862">
-              (31) 999990862
-            </a>
-          </td>
-          <td>04/06/2023</td>
-        </tr>
+        ?>
 
-        <tr>
-          <td>Ranizinha da silva</td>
-          <td>26 anos</td>
-          <td><a class="link-success link-underline-opacity-100-hover" href="https://wa.me/31999996482">
-              (31) 999996482
-            </a>
-          </td>
-          <td>15/03/2025</td>
-        </tr>
+          <tr onclick="window.location.href='/paciente/<?php echo $row['id']; ?>';"
+            style="cursor: pointer;">
+            <td><?php echo $row['nome']; ?></td>
+            <td><?php echo calcularIdade($row['data_nascimento']); ?></td>
+            <td>
+              <a class="link-success link-underline-opacity-100-hover"
+                href="https://wa.me/<?php echo $row['telefone']; ?>"
+                target="_blank">
+                <?php echo $row['telefone']; ?>
+              </a>
+            </td>
+            <td>29/02/2024</td>
+          </tr>
+
+        <?php
+        }
+        ?>
 
       </tbody>
 
     </table>
 
-
   </div>
-
-
 
 </div>
