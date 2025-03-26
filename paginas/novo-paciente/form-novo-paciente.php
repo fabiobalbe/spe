@@ -12,7 +12,7 @@ require_once DIR_ABS . '/spe/auth/access_control.php';
 </div>
 
 <!-- Formulário -->
-<script src="/novo-paciente/valida-form-paciente.js" defer></script>
+<script src="/paginas/novo-paciente/valida-form-paciente.js" defer></script>
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
     <form action="/paginas/novo-paciente/processa-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
