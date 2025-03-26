@@ -36,32 +36,13 @@ require_once dirname(__DIR__) . '/spe/biblioteca/router.php';
 $router = new Router;
 
 //------------------------------------------------------ ROTAS ------------------------------------------------------//
-//MOVER PARA OUTRO ARQUIVO DEPOIS!
-$router->add("/", function () {
-  include_once dirname(__DIR__) . '/spe/paginas/painel.php';
-}, "Painel");
 
-$router->add("/pacientes", function () {
-  include_once dirname(__DIR__) . '/spe/paginas/pacientes.php';
-}, "Pacientes");
-
-$router->add("/pacientes/novo-paciente", function () {
-  include_once dirname(__DIR__) . '/spe/paginas/novo-paciente/form-novo-paciente.php';
-}, "Cadastro de novo paciente");
-
-$router->add("/historico", function () {
-  echo "HISTÓRICO DE CONSULTAS";
-}, "Historico de consultas");
-
-$router->add("/logout", function () {
-  include_once dirname(__DIR__) . "/spe/auth/logout.php";
-});
-
-$router->add("/signup", function () {
-  header("Location: /auth/signup.php");
-  exit();
-});
-
+$arquivo_rotas = dirname(__DIR__) . '/spe/routes.php';
+if (file_exists($arquivo_rotas)) {
+  require_once $arquivo_rotas;
+} else {
+  die("Erro crítico: arquivo de rotas não encontrado.");
+}
 
 //------------------------------------------------------- PÁGINA ---------------------------------------------------//
 // Define o título da página antes do HTML
