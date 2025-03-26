@@ -1,4 +1,6 @@
 <?php
+
+// Controle de acesso de importação de componente.
 require_once dirname(__DIR__) . '/auth/access_control.php';
 
 class Router
@@ -13,22 +15,35 @@ class Router
 
   public function dispatch(string $path): void
   {
-    if (array_key_exists($path, $this->routes)) {
-      $route = $this->routes[$path];
-      $this->title = $route['title'] ?: "Meu Site";
-      call_user_func($route['handler']);
-    } else {
-      $this->title = "Página não encontrada";
-      echo "Página não encontrada";
+    foreach ($this->routes as $routePath => $route) {
+      // Transforma "/paciente/:id" em "/paciente/([^/]+)"
+      $pattern = preg_replace('/:[^\/]+/', '([^/]+)', $routePath);
+
+      // Usa delimitadores '#' para evitar problemas com barras '/'
+      if (preg_match('#^' . $pattern . '$#', $path, $matches)) {
+        array_shift($matches); // Remove o primeiro elemento (string completa)
+
+        // Define o título da página
+        $this->title = $route['title'] ?: "Meu Site";
+
+        // Executa o handler e passa os parâmetros extraídos
+        call_user_func_array($route['handler'], $matches);
+        return;
+      }
     }
+
+    // Se não encontrou uma rota correspondente
+    $this->title = "Página não encontrada";
+    echo "Página não encontrada";
   }
 
-  // Novo método para obter o título sem executar o handler
   public function getRouteTitle(string $path): string
   {
-    if (array_key_exists($path, $this->routes)) {
-      $route = $this->routes[$path];
-      return $route['title'] ?: "Meu Site";
+    foreach ($this->routes as $routePath => $route) {
+      $pattern = preg_replace('/:[^\/]+/', '([^/]+)', $routePath);
+      if (preg_match('#^' . $pattern . '$#', $path)) {
+        return $route['title'] ?: "Meu Site";
+      }
     }
     return "Página não encontrada";
   }

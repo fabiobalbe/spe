@@ -13,7 +13,8 @@ $router->add("/pacientes/novo-paciente", function () {
   include_once dirname(__DIR__) . '/spe/paginas/novo-paciente/form-novo-paciente.php';
 }, "Cadastro de novo paciente");
 
-$router->add("/paciente", function () {
+$router->add("/paciente/:id", function ($id) {
+  $_GET['id'] = $id;
   include_once dirname(__DIR__) . '/spe/paginas/paciente/paciente.php';
 }, "Página do paciente");
 
@@ -29,4 +30,3 @@ $router->add("/signup", function () {
   header("Location: /auth/signup.php");
   exit();
 });
-
