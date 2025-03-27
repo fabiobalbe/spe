@@ -14,14 +14,24 @@ $router->add("/pacientes/novo-paciente", function () {
 }, "Cadastro de novo paciente");
 
 $router->add("/paciente/:id", function ($id) {
-    if (!ctype_digit($id) || $id <= 0) {
-        header("HTTP/1.0 400 Bad Request");
-        echo "ID do paciente deve ser um número inteiro positivo";
-        exit;
-    }
-    $idPaciente = (int)$id; // Força conversão para inteiro
-    include_once dirname(__DIR__) . '/spe/paginas/paciente/paciente.php';
+  if (!ctype_digit($id) || $id <= 0) {
+    header("HTTP/1.0 400 Bad Request");
+    echo "ID do paciente deve ser um número inteiro positivo";
+    exit;
+  }
+  $idPaciente = (int)$id; // Força conversão para inteiro
+  include_once dirname(__DIR__) . '/spe/paginas/paciente/paciente.php';
 }, "Página do paciente");
+
+$router->add("/paciente/editar/:id", function ($id) {
+  if (!ctype_digit($id) || $id <= 0) {
+    header("HTTP/1.0 400 Bad Request");
+    echo "ID do paciente deve ser um número inteiro positivo";
+    exit;
+  }
+  $idPaciente = (int)$id; // Força conversão para inteiro
+  echo "Página de edição do paciente: " . $idPaciente;
+}, "Página de edição de paciente");
 
 $router->add("/historico", function () {
   echo "HISTÓRICO DE CONSULTAS";
