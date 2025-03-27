@@ -33,9 +33,14 @@ if (!$row) {
   <div class="col-12 d-flex">
     <h2>Detalhes do paciente:</h2>
     <div class="d-flex ms-auto">
-      <a href="/pacientes" class="btn btn-outline-warning d-flex align-items-center">
+    <a href="/paciente/editar/<?php echo htmlspecialchars($idPaciente);?>" class="btn btn-outline-warning d-flex align-items-center">
+Editar
+      </a>
+
+      <a href="/pacientes" class="btn btn-outline-secondary d-flex align-items-center ms-2">
         Voltar
       </a>
+
     </div>
   </div>
 </div>
