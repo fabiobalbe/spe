@@ -26,7 +26,7 @@ $stmt->close();
     <h2>Lista de pacientes cadastrados:</h2>
 
     <div class="d-flex ms-auto">
-      <a href="/pacientes/novo-paciente" class="btn btn-primary d-flex align-items-center">
+      <a href="/pacientes/novo-paciente" class="btn btn-outline-primary d-flex align-items-center">
         Cadastrar novo paciente
       </a>
     </div>

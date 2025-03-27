@@ -6,7 +6,7 @@ require_once DIR_ABS . '/spe/auth/access_control.php';
   <div class="col-12 d-flex">
     <h2>Cadastro de novo paciente:</h2>
     <div class="d-flex ms-auto">
-      <button type="button" class="btn btn-danger" onclick="history.back()">Cancelar</button>
+      <button type="button" class="btn btn-outline-danger" onclick="history.back()">Cancelar</button>
     </div>
   </div>
 </div>
@@ -166,7 +166,7 @@ require_once DIR_ABS . '/spe/auth/access_control.php';
       <!-- Botão de Cadastro -->
       <div class="row mt-5 g-2">
         <div class="col-2">
-          <button type="submit" class="btn w-100 btn-success">Cadastrar</button>
+          <button type="submit" class="btn w-100 btn-outline-success">Cadastrar</button>
         </div>
       </div>
 

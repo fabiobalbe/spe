@@ -33,7 +33,7 @@ if (!$row) {
   <div class="col-12 d-flex">
     <h2>Detalhes do paciente:</h2>
     <div class="d-flex ms-auto">
-      <a href="/pacientes" class="btn btn-warning d-flex align-items-center">
+      <a href="/pacientes" class="btn btn-outline-warning d-flex align-items-center">
         Voltar
       </a>
     </div>
