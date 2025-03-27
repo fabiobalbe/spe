@@ -67,6 +67,13 @@ if (!$row) {
 
         <p>
           <strong>
+            <small class="text-body-secondary">Típo sanguíneo: </small>
+          </strong>
+          <?php echo htmlspecialchars($row['tipo_sanguineo']); ?>
+        </p>
+
+        <p>
+          <strong>
             <small class="text-body-secondary">CPF: </small>
           </strong>
           <?php echo htmlspecialchars($row['cpf']); ?>
@@ -96,7 +103,7 @@ if (!$row) {
 
         <p>
           <strong>
-            <small class="text-body-secondary">e-mail: </small>
+            <small class="text-body-secondary">E-mail: </small>
           </strong>
           <a href="mailto:<?php echo htmlspecialchars($row['email']); ?>">
             <?php echo htmlspecialchars($row['email']); ?>
@@ -116,17 +123,23 @@ if (!$row) {
     <div class="card w-100 d-flex">
       <div class="card-body">
 
-        <p>
-          <strong>
-            <small class="text-body-secondary">Alergias: </small>
-          </strong>
-          <?php echo htmlspecialchars($row['alergias']); ?>
+        <h4>
+          Informações médicas:
+        </h4>
+        </br>
+
+        <strong>
+          <small class="text-body-secondary">Alergias: </small>
+        </strong>
+        </br>
+        <?php echo htmlspecialchars($row['alergias']); ?>
         </p>
 
         <p>
           <strong>
             <small class="text-body-secondary">Observações: </small>
           </strong>
+          </br>
           <?php echo htmlspecialchars($row['observacoes']); ?>
         </p>
 
@@ -134,6 +147,7 @@ if (!$row) {
           <strong>
             <small class="text-body-secondary">Histórico médico: </small>
           </strong>
+          </br>
           <?php echo htmlspecialchars($row['historico_medico']); ?>
         </p>
 
