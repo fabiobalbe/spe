@@ -1,18 +1,42 @@
 document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("form-paciente");
+  const salvarBtn = document.getElementById("salvar-btn");
+
+  // Armazena os valores iniciais do formulário
+  const initialData = new FormData(form);
+
+  // Função para verificar se houve alterações e se o formulário é válido
+  function checkFormChanges() {
+    const currentData = new FormData(form);
+    let formChanged = false;
+
+    // Compara os valores iniciais com os atuais
+    for (let [key, value] of initialData.entries()) {
+      if (currentData.get(key) !== value) {
+        formChanged = true;
+        break;
+      }
+    }
+
+    // Verifica se o formulário é válido (usando a API de validação HTML5)
+    const isValid = form.checkValidity();
+    salvarBtn.disabled = !(formChanged && isValid);
+  }
+
+  // Adiciona eventos de mudança a todos os campos do formulário
+  form.addEventListener("input", checkFormChanges);
+  form.addEventListener("change", checkFormChanges); // Para selects e outros elementos
 
   form.addEventListener("submit", function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
     let isValid = true;
 
-    let nome = document.getElementById("nome");
-    let nascimento = document.getElementById("data-nascimento");
-    let sexo = document.getElementById("sexo");
-    let fatorRh = document.getElementById("fator-rh");
-    let cpf = document.getElementById("cpf");
-    let tel = document.getElementById("tel");
+    const nome = document.getElementById("nome");
+    const nascimento = document.getElementById("data-nascimento");
+    const sexo = document.getElementById("sexo");
+    const fatorRh = document.getElementById("fator-rh");
+    const cpf = document.getElementById("cpf");
+    const email = document.getElementById("email"); // Corrigido: declarado aqui
+    const tel = document.getElementById("tel");
 
     // Validação do Nome
     if (nome.value.trim().length < 3) {
@@ -80,7 +104,6 @@ document.addEventListener("DOMContentLoaded", function() {
           cpf.classList.add("is-invalid");
           isValid = false;
         });
-
       promises.push(cpfPromise);
     } else {
       cpf.classList.remove("is-invalid");
@@ -127,13 +150,14 @@ document.addEventListener("DOMContentLoaded", function() {
       tel.classList.add("is-valid");
     }
 
-    // Espera todas as validações assíncronas antes de submeter o formulário
+    // Espera todas as validações assíncronas
+    event.preventDefault(); // Impede o envio até que as validações assíncronas terminem
     Promise.all(promises).then(() => {
       if (isValid) {
-        form.submit();
+        form.submit(); // Envia o formulário se tudo for válido
+      } else {
+        form.classList.add("was-validated");
       }
     });
-
-    form.classList.add("was-validated");
   });
 });

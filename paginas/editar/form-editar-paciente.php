@@ -191,7 +191,7 @@ if (!$row) {
       <!-- Botões -->
       <div class="row mt-5 g-2">
         <div class="col-6">
-          <button type="submit" class="btn w-30 btn-outline-success">Salvar alterações</button>
+          <button type="submit" class="btn w-30 btn-outline-success" id="salvar-btn" disabled>Salvar alterações</button>
           <button type="submit" class="btn w-30 btn-outline-warning">Arquivar cadastro</button>
           <button type="submit" class="btn w-30 btn-outline-danger">Excluir cadastro</button>
         </div>
