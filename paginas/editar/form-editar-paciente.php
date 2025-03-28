@@ -40,7 +40,8 @@ if (!$row) {
 <script src="/paginas/editar/valida-edita-paciente.js" defer></script>
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
-    <form action="" method="POST" id="form-paciente" novalidate class="w-100">
+    <form action="/paginas/editar/edita-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
+      <input type="hidden" name="id" value="<?= htmlspecialchars($idPaciente) ?>">
       <?php
       function getFormData($campo, $default = '')
       {
@@ -123,7 +124,7 @@ if (!$row) {
             id="cpf"
             name="cpf"
             placeholder="000.000.000-00"
-            value="<?php echo htmlspecialchars($row['cpf']); ; ?>">
+            value="<?php echo htmlspecialchars($row['cpf']);; ?>">
           <div class="invalid-feedback">
             CPF inválido!
           </div>
@@ -200,4 +201,3 @@ if (!$row) {
     </form>
   </div>
 </div>
-<script src="../../biblioteca/before-unload.js" defer></script>
