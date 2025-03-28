@@ -4,11 +4,19 @@ require_once "../../biblioteca/valida-cpf.php";
 require_once "../../biblioteca/valida-telefone.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
+if (empty($_POST["id"])) {
+  $_SESSION["mensagem-tipo"] = "negativo";
+  $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Ocorreu um problema.";
+  $_SESSION["form_dados"] = $_POST;
+  header("Location: /paciente/" . $_POST["id"] ."");
+  exit;
+}
+
 if (empty($_POST["nome"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Nome deve ter ao menos 3 caracteres.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /");
+  header("Location: /paciente/" . $_POST["id"] ."");
   exit;
 }
 if (empty($_POST["data-nascimento"])) {
