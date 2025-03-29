@@ -1,163 +1,104 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form-paciente");
   const salvarBtn = document.getElementById("salvar-btn");
+
+  // Lista de campos que serão validados
+  const fields = ["id", "nome", "data-nascimento", "sexo", "fator-rh", "cpf", "email", "tel"];
 
   // Armazena os valores iniciais do formulário
   const initialData = new FormData(form);
 
-  // Função para verificar se houve alterações e se o formulário é válido
-  function checkFormChanges() {
+  // Função para verificar se houve alterações no formulário
+  const checkFormChanges = () => {
     const currentData = new FormData(form);
-    let formChanged = false;
+    // Verifica se algum campo teve seu valor alterado
+    const formChanged = [...initialData.entries()].some(([key, value]) => currentData.get(key) !== value);
+    // Habilita o botão somente se houver mudanças e se o formulário for válido
+    salvarBtn.disabled = !(formChanged && form.checkValidity());
+  };
 
-    // Compara os valores iniciais com os atuais
-    for (let [key, value] of initialData.entries()) {
-      if (currentData.get(key) !== value) {
-        formChanged = true;
-        break;
-      }
-    }
-
-    // Verifica se o formulário é válido (usando a API de validação HTML5)
-    const isValid = form.checkValidity();
-    salvarBtn.disabled = !(formChanged && isValid);
-  }
-
-  // Adiciona eventos de mudança a todos os campos do formulário
+  // Adiciona eventos para detectar mudanças no formulário
   form.addEventListener("input", checkFormChanges);
-  form.addEventListener("change", checkFormChanges); // Para selects e outros elementos
+  form.addEventListener("change", checkFormChanges);
 
-  form.addEventListener("submit", function(event) {
+  // Função para adicionar ou remover classes de validação
+  const setValidationState = (element, isValid) => {
+    element.classList.toggle("is-invalid", !isValid);
+    element.classList.toggle("is-valid", isValid);
+  };
+
+  // Função para validar campos individuais
+  const validateField = (field, condition) => {
+    setValidationState(field, condition);
+    return condition;
+  };
+
+  // Validação do CPF com verificações assíncronas
+  const validateCPF = async (cpf, id) => {
+    if (!cpf.value.trim()) return setValidationState(cpf, true);
+
+    try {
+      // Verifica se o CPF é válido
+      const cpfResponse = await fetch(`../../api/api-valida-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
+      const { isValid } = await cpfResponse.json();
+      if (!isValid) return setValidationState(cpf, false);
+
+      // Verifica se o CPF já está cadastrado
+      const existsResponse = await fetch(`../../api/api-existe-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
+      const { isValid: cpfExists } = await existsResponse.json();
+      if (!cpfExists) return setValidationState(cpf, true);
+
+      // Se existir, verifica se pertence ao mesmo paciente
+      const idResponse = await fetch(`../../api/api-id-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
+      const { id: existingId } = await idResponse.json();
+      setValidationState(cpf, existingId === parseInt(id.value) || !existingId);
+    } catch (error) {
+      console.error("Erro ao validar CPF:", error);
+      setValidationState(cpf, false);
+    }
+  };
+
+  // Validação de email apenas se estiver preenchido
+  const validateEmail = (email) => {
+    if (!email.value.trim()) return setValidationState(email, true); // Se estiver vazio, é válido
+    return validateField(email, /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value));
+  };
+
+  // Validação do telefone com verificação assíncrona
+  const validateTel = async (tel) => {
+    if (!tel.value.trim()) return setValidationState(tel, true);
+    try {
+      const response = await fetch(`../../api/api-valida-tel.php?tel=${encodeURIComponent(tel.value)}`);
+      const { isValid } = await response.json();
+      setValidationState(tel, isValid);
+    } catch (error) {
+      console.error("Erro ao validar Telefone:", error);
+      setValidationState(tel, false);
+    }
+  };
+
+  // Evento acionado ao submeter o formulário
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault(); // Impede o envio imediato do formulário
+
+    // Obtém os elementos do formulário
+    const elements = Object.fromEntries(fields.map(id => [id, document.getElementById(id)]));
+
     let isValid = true;
+    isValid &= validateField(elements.nome, elements.nome.value.trim().length >= 3); // Nome com pelo menos 3 caracteres
+    isValid &= validateField(elements["data-nascimento"], !!elements["data-nascimento"].value); // Data de nascimento preenchida
+    isValid &= validateField(elements.sexo, elements.sexo.value !== ""); // Sexo selecionado
+    isValid &= validateField(elements["fator-rh"], elements["fator-rh"].value !== ""); // Fator RH selecionado
+    validateEmail(elements.email); // Apenas valida se estiver preenchido
 
-    const nome = document.getElementById("nome");
-    const nascimento = document.getElementById("data-nascimento");
-    const sexo = document.getElementById("sexo");
-    const fatorRh = document.getElementById("fator-rh");
-    const cpf = document.getElementById("cpf");
-    const email = document.getElementById("email"); // Corrigido: declarado aqui
-    const tel = document.getElementById("tel");
+    // Validações assíncronas (CPF e telefone)
+    await Promise.all([
+      validateCPF(elements.cpf, elements.id),
+      validateTel(elements.tel)
+    ]);
 
-    // Validação do Nome
-    if (nome.value.trim().length < 3) {
-      nome.classList.add("is-invalid");
-      isValid = false;
-    } else {
-      nome.classList.remove("is-invalid");
-      nome.classList.add("is-valid");
-    }
-
-    // Validação da Data de Nascimento
-    if (!nascimento.value) {
-      nascimento.classList.add("is-invalid");
-      isValid = false;
-    } else {
-      nascimento.classList.remove("is-invalid");
-      nascimento.classList.add("is-valid");
-    }
-
-    // Validação do Sexo
-    if (sexo.value === "") {
-      sexo.classList.add("is-invalid");
-      isValid = false;
-    } else {
-      sexo.classList.remove("is-invalid");
-      sexo.classList.add("is-valid");
-    }
-
-    // Validação do Fator RH
-    if (fatorRh.value === "") {
-      fatorRh.classList.add("is-invalid");
-      isValid = false;
-    } else {
-      fatorRh.classList.remove("is-invalid");
-      fatorRh.classList.add("is-valid");
-    }
-
-    // Criar promessas de validação assíncrona
-    let promises = [];
-
-    // Validação do CPF
-    if (cpf.value.trim() !== "") {
-      let cpfPromise = fetch("../../api/api-valida-cpf.php?cpf=" + encodeURIComponent(cpf.value))
-        .then(response => response.json())
-        .then(data => {
-          if (!data.isValid) {
-            cpf.classList.add("is-invalid");
-            isValid = false;
-          } else {
-            return fetch("../../api/api-existe-cpf.php?cpf=" + encodeURIComponent(cpf.value))
-              .then(response => response.json())
-              .then(data => {
-                if (data.isValid) {
-                  cpf.classList.add("is-invalid");
-                  isValid = false;
-                } else {
-                  cpf.classList.remove("is-invalid");
-                  cpf.classList.add("is-valid");
-                }
-              });
-          }
-        })
-        .catch(error => {
-          console.error("Erro ao validar CPF:", error);
-          cpf.classList.add("is-invalid");
-          isValid = false;
-        });
-      promises.push(cpfPromise);
-    } else {
-      cpf.classList.remove("is-invalid");
-      cpf.classList.add("is-valid");
-    }
-
-    // Validação do Email
-    if (email.value.trim() !== "") {
-      function isEmailValid(email) {
-        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        return regex.test(email);
-      }
-      if (!isEmailValid(email.value)) {
-        email.classList.add("is-invalid");
-        isValid = false;
-      } else {
-        email.classList.remove("is-invalid");
-        email.classList.add("is-valid");
-      }
-    }
-
-    // Validação do Telefone
-    if (tel.value.trim() !== "") {
-      let telPromise = fetch("../../api/api-valida-tel.php?tel=" + encodeURIComponent(tel.value))
-        .then(response => response.json())
-        .then(data => {
-          if (!data.isValid) {
-            tel.classList.add("is-invalid");
-            tel.classList.remove("is-valid");
-            isValid = false;
-          } else {
-            tel.classList.remove("is-invalid");
-            tel.classList.add("is-valid");
-          }
-        })
-        .catch(error => {
-          console.error("Erro ao validar Telefone:", error);
-          tel.classList.add("is-invalid");
-          isValid = false;
-        });
-      promises.push(telPromise);
-    } else {
-      tel.classList.remove("is-invalid");
-      tel.classList.add("is-valid");
-    }
-
-    // Espera todas as validações assíncronas
-    event.preventDefault(); // Impede o envio até que as validações assíncronas terminem
-    Promise.all(promises).then(() => {
-      if (isValid) {
-        form.submit(); // Envia o formulário se tudo for válido
-      } else {
-        form.classList.add("was-validated");
-      }
-    });
+    // Se todas as validações passarem, submete o formulário
+    if (isValid) form.submit();
+    else form.classList.add("was-validated");
   });
 });
