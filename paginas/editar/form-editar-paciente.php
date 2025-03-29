@@ -41,7 +41,7 @@ if (!$row) {
 <div class="row">
   <div class="col-12 d-flex align-items-center mt-3">
     <form action="/paginas/editar/edita-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
-      <input type="hidden" name="id" value="<?= htmlspecialchars($idPaciente) ?>">
+      <input type="hidden" name="id" id="id" value="<?= htmlspecialchars($idPaciente) ?>">
       <?php
       function getFormData($campo, $default = '')
       {
