@@ -8,7 +8,7 @@ if (empty($_POST["id"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Ocorreu um problema.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
 
@@ -16,28 +16,28 @@ if (empty($_POST["nome"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Nome deve ter ao menos 3 caracteres.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
 if (empty($_POST["data-nascimento"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Faltou a data de nascimento.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
 if (empty($_POST["sexo"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong> Faltou informar o sexo";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
 if (empty($_POST["fator-rh"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong> Faltou informar o Tipo Sanguíneo.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
 
@@ -47,7 +47,7 @@ if (!empty($_POST["cpf"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF inválido!";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/" . $_POST["id"] ."");
+    header("Location: /paciente/editar/" . $_POST["id"] ."");
     exit;
   }
 }
@@ -56,7 +56,7 @@ if (!empty($_POST["email"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "Endereço de e-mail incorreto.";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/" . $_POST["id"] ."");
+    header("Location: /paciente/editar/" . $_POST["id"] ."");
     exit;
   }
 }
@@ -65,7 +65,7 @@ if (!empty($_POST["tel"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "Telefone incorreto.";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/" . $_POST["id"] ."");
+    header("Location: /paciente/editar/" . $_POST["id"] ."");
     exit;
   }
 }
@@ -94,7 +94,7 @@ if (!$stmt->prepare($sql)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
 
@@ -135,12 +135,12 @@ if ($stmt->execute()) {
   $_SESSION["mensagem-conteudo"] = "O cadastro de <strong>"
     . $_POST["nome"]
     . " </strong> foi atualizado com sucesso!";
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 } else {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "Erro ao atualizar o cadastro do paciente: " . $stmt->error;
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/" . $_POST["id"] ."");
+  header("Location: /paciente/editar/" . $_POST["id"] ."");
   exit;
 }
