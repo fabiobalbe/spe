@@ -5,6 +5,7 @@ require_once "../../biblioteca/valida-telefone.php";
 $mysqli = require  "../../auth/database.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
+//NOME
 if (empty($_POST["nome"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
@@ -12,6 +13,8 @@ if (empty($_POST["nome"])) {
   header("Location: /pacientes/novo-paciente");
   exit;
 }
+
+//DATA DE NASCIMENTO
 if (empty($_POST["data-nascimento"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
@@ -19,6 +22,8 @@ if (empty($_POST["data-nascimento"])) {
   header("Location: /pacientes/novo-paciente");
   exit;
 }
+
+//SEXO
 if (empty($_POST["sexo"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
@@ -26,6 +31,8 @@ if (empty($_POST["sexo"])) {
   header("Location: /pacientes/novo-paciente");
   exit;
 }
+
+//FATOR-RH
 if (empty($_POST["fator-rh"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Não foi possível cadastrar o paciente.";
@@ -56,6 +63,7 @@ if (!empty($_POST["cpf"])) {
   }
 }
 
+//EMAIL
 if (!empty($_POST["email"])) {
   if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     $_SESSION["mensagem-tipo"] = "neutro";
@@ -65,6 +73,8 @@ if (!empty($_POST["email"])) {
     exit;
   }
 }
+
+//TELEFONE
 if (!empty($_POST["tel"])) {
   if (!validarTelefone($_POST["tel"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
@@ -75,8 +85,7 @@ if (!empty($_POST["tel"])) {
   }
 }
 
-$mysqli = require  "../../auth/database.php";
-
+//QUERY MYSQL
 $sql = "INSERT INTO pacientes
         (
           nome,
@@ -92,8 +101,10 @@ $sql = "INSERT INTO pacientes
           ativo
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+//INICIA QUERY
 $stmt = $mysqli->stmt_init();
 
+//PROBLEMA NA QUERY?
 if (!$stmt->prepare($sql)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
@@ -103,7 +114,7 @@ if (!$stmt->prepare($sql)) {
 
 }
 
-// Definir os valores
+//DÁ NOME MAIS SIMPLES PARA AS VARIÁVEIS _POST
 $nome = $_POST["nome"];
 $data_nascimento = $_POST["data-nascimento"];
 $sexo = $_POST["sexo"];
@@ -116,7 +127,7 @@ $observacoes = $_POST["obs"] ?? "";
 $historico_medico = $_POST["historico"] ?? "";
 $ativo = 1;
 
-// Bind dos parâmetros
+//BIND DOS PARÂMETROS
 $stmt->bind_param(
   "ssssssssssi",  // Tipos dos dados
   $nome,
@@ -132,6 +143,7 @@ $stmt->bind_param(
   $ativo
 );
 
+//EXECUTA
 if ($stmt->execute()) {
   unset($_SESSION["form_dados"]);
   $_SESSION["mensagem-tipo"] = "positivo";
@@ -141,6 +153,7 @@ if ($stmt->execute()) {
   header("Location: /pacientes");
   exit;
 } else {
+  // DEU ERRADO A EXECUÇÃO?
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "Erro ao cadastrar paciente: " . $stmt->error;
   $_SESSION["form_dados"] = $_POST;
