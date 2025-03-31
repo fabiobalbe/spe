@@ -41,18 +41,18 @@ if (empty($_POST["fator-rh"])) {
   exit;
 }
 
-$idCpf = idCpf($_POST["cpf"]);
-$existeCpf = existeCpf($_POST["cpf"]);
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
 if (!empty($_POST["cpf"])) {
-  if (!validarCPF($_POST["cpf"])) {
+  $mysqli = require "../../auth/database.php";
+  $cpfValidator = new CPFValidator($mysqli);
+  if (!$cpfValidator->validarCPF($_POST["cpf"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF inválido!";
     $_SESSION["form_dados"] = $_POST;
     header("Location: /paciente/editar/" . $_POST["id"] . "");
     exit;
   }
-  if ($existeCpf === true && $idCpf != $_POST["id"]) {
+  if ($cpfValidator->existeCpf($_POST["cpf"]) === true && $cpfValidator->idCpf($_POST["cpf"]) != $_POST["id"]) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF já utilizado!";
     $_SESSION["form_dados"] = $_POST;
