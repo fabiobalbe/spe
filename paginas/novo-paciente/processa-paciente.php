@@ -2,6 +2,7 @@
 require_once '../../auth/verifica.php';
 require_once "../../biblioteca/valida-cpf.php";
 require_once "../../biblioteca/valida-telefone.php";
+$mysqli = require  "../../auth/database.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
 if (empty($_POST["nome"])) {
@@ -34,15 +35,27 @@ if (empty($_POST["fator-rh"])) {
 }
 
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
+// CPF
 if (!empty($_POST["cpf"])) {
-  if (!validarCPF($_POST["cpf"])) {
+  $cpfValidator = new CPFValidator($mysqli);
+  //CPF VALIDO?
+  if (!$cpfValidator->validarCPF($_POST["cpf"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF inválido!";
     $_SESSION["form_dados"] = $_POST;
     header("Location: /pacientes/novo-paciente");
     exit;
   }
+  // CPF JÁ EXISTE?
+  if ($cpfValidator->existeCpf($_POST["cpf"]) === true) {
+    $_SESSION["mensagem-tipo"] = "neutro";
+    $_SESSION["mensagem-conteudo"] = "CPF já utilizado!";
+    $_SESSION["form_dados"] = $_POST;
+    header("Location: /pacientes/novo-paciente");
+    exit;
+  }
 }
+
 if (!empty($_POST["email"])) {
   if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     $_SESSION["mensagem-tipo"] = "neutro";
