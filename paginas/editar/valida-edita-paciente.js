@@ -38,20 +38,24 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!cpf.value.trim()) return setValidationState(cpf, true);
 
     try {
-      // Verifica se o CPF é válido
+      // Verifica com a API se o CPF é válido
       const cpfResponse = await fetch(`../../api/api-valida-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
       const { isValid } = await cpfResponse.json();
+
+      // Condiciona a reposta da API
       if (!isValid) return setValidationState(cpf, false);
 
-      // Verifica se o CPF já está cadastrado
+      // Verifica com API se o CPF já está cadastrado
       const existsResponse = await fetch(`../../api/api-existe-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
-      const { isValid: cpfExists } = await existsResponse.json();
-      if (!cpfExists) return setValidationState(cpf, true);
+      const { existe: cpfExists } = await existsResponse.json();
 
-      // Se existir, verifica se pertence ao mesmo paciente
+      // Verifica com API se CPF já pertence ao usuário
       const idResponse = await fetch(`../../api/api-id-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
       const { id: existingId } = await idResponse.json();
-      setValidationState(cpf, existingId === parseInt(id.value) || !existingId);
+
+      // Condiciona as respostas da API
+      if (cpfExists && existingId != id.value) return setValidationState(cpf, false);
+
     } catch (error) {
       console.error("Erro ao validar CPF:", error);
       setValidationState(cpf, false);
