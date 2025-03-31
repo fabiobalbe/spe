@@ -5,6 +5,7 @@ require_once "../../biblioteca/valida-telefone.php";
 $mysqli = require  "../../auth/database.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
+// ID
 if (empty($_POST["id"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Ocorreu um problema.";
@@ -13,6 +14,7 @@ if (empty($_POST["id"])) {
   exit;
 }
 
+//NOME
 if (empty($_POST["nome"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Nome deve ter ao menos 3 caracteres.";
@@ -20,6 +22,8 @@ if (empty($_POST["nome"])) {
   header("Location: /paciente/editar/" . $_POST["id"] . "");
   exit;
 }
+
+//DATA DE NASCIMENTO
 if (empty($_POST["data-nascimento"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Faltou a data de nascimento.";
@@ -27,6 +31,8 @@ if (empty($_POST["data-nascimento"])) {
   header("Location: /paciente/editar/" . $_POST["id"] . "");
   exit;
 }
+
+//SEXO
 if (empty($_POST["sexo"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong> Faltou informar o sexo";
@@ -34,6 +40,8 @@ if (empty($_POST["sexo"])) {
   header("Location: /paciente/editar/" . $_POST["id"] . "");
   exit;
 }
+
+//FATOR-RH
 if (empty($_POST["fator-rh"])) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong> Faltou informar o Tipo Sanguíneo.";
@@ -43,8 +51,10 @@ if (empty($_POST["fator-rh"])) {
 }
 
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
+// CPF
 if (!empty($_POST["cpf"])) {
   $cpfValidator = new CPFValidator($mysqli);
+  //CPF VALIDO?
   if (!$cpfValidator->validarCPF($_POST["cpf"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF inválido!";
@@ -52,6 +62,7 @@ if (!empty($_POST["cpf"])) {
     header("Location: /paciente/editar/" . $_POST["id"] . "");
     exit;
   }
+  // CPF EXISTE E NÃO PERTENCE AO ID?
   if ($cpfValidator->existeCpf($_POST["cpf"]) === true && $cpfValidator->idCpf($_POST["cpf"]) != $_POST["id"]) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF já utilizado!";
@@ -60,6 +71,8 @@ if (!empty($_POST["cpf"])) {
     exit;
   }
 }
+
+//EMAIL
 if (!empty($_POST["email"])) {
   if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     $_SESSION["mensagem-tipo"] = "neutro";
@@ -69,6 +82,8 @@ if (!empty($_POST["email"])) {
     exit;
   }
 }
+
+//TELEFONE
 if (!empty($_POST["tel"])) {
   if (!validarTelefone($_POST["tel"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
@@ -79,7 +94,7 @@ if (!empty($_POST["tel"])) {
   }
 }
 
-
+//QUERY MYSQL
 $sql = "UPDATE pacientes
         SET
           nome = ?,
@@ -96,8 +111,10 @@ $sql = "UPDATE pacientes
         WHERE id = ?
         ";
 
+//INICIA CONEXÃO
 $stmt = $mysqli->stmt_init();
 
+//PROBLEMA NA CONEXÃO?
 if (!$stmt->prepare($sql)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
@@ -106,7 +123,7 @@ if (!$stmt->prepare($sql)) {
   exit;
 }
 
-// Definir os valores
+//PASSA VARIAVEL POST PARA VÁRIAVEL MAIS FÁCIL DE COMPREENDER
 $nome = $_POST["nome"];
 $data_nascimento = $_POST["data-nascimento"];
 $sexo = $_POST["sexo"];
@@ -120,7 +137,7 @@ $historico_medico = $_POST["historico"] ?? "";
 $ativo = 1;
 $id = $_POST["id"];
 
-// Bind dos parâmetros
+//BIND DE PARÂMETROS
 $stmt->bind_param(
   "ssssssssssii",  // Tipos dos dados
   $nome,
@@ -137,7 +154,9 @@ $stmt->bind_param(
   $id
 );
 
+//EXECUTA QUERY COM SEGURANÇA
 if ($stmt->execute()) {
+  //DEU CERTO?
   unset($_SESSION["form_dados"]);
   $_SESSION["mensagem-tipo"] = "positivo";
   $_SESSION["mensagem-conteudo"] = "O cadastro de <strong>"
@@ -146,6 +165,7 @@ if ($stmt->execute()) {
   header("Location: /paciente/editar/" . $_POST["id"] . "");
   exit;
 } else {
+  //DEU ERRADO?
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "Erro ao atualizar o cadastro do paciente: " . $stmt->error;
   $_SESSION["form_dados"] = $_POST;
