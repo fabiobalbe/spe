@@ -2,6 +2,7 @@
 require_once '../../auth/verifica.php';
 require_once "../../biblioteca/valida-cpf.php";
 require_once "../../biblioteca/valida-telefone.php";
+$mysqli = require  "../../auth/database.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
 if (empty($_POST["id"])) {
@@ -43,7 +44,6 @@ if (empty($_POST["fator-rh"])) {
 
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
 if (!empty($_POST["cpf"])) {
-  $mysqli = require "../../auth/database.php";
   $cpfValidator = new CPFValidator($mysqli);
   if (!$cpfValidator->validarCPF($_POST["cpf"])) {
     $_SESSION["mensagem-tipo"] = "neutro";
@@ -79,7 +79,6 @@ if (!empty($_POST["tel"])) {
   }
 }
 
-$mysqli = require  "../../auth/database.php";
 
 $sql = "UPDATE pacientes
         SET

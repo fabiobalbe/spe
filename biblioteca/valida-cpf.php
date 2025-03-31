@@ -1,12 +1,12 @@
 <?php
-require_once dirname(__DIR__) . '/auth/verifica.php';
-
 class CPFValidator
 {
     private $mysqli;
 
-    public function __construct($mysqli)
+    // Construtor com o $mysqli opcional
+    public function __construct($mysqli = null)
     {
+        // Se o parâmetro não for passado, a conexão com o banco não será usada
         $this->mysqli = $mysqli;
     }
 
@@ -40,40 +40,53 @@ class CPFValidator
         return true;
     }
 
+    // Verifica se o CPF já existe no banco (quando a conexão com o DB for passada)
     public function existeCpf($cpf)
     {
-        $sql = "SELECT * FROM pacientes WHERE cpf = ?";
-        $stmt = $this->mysqli->prepare($sql);
+        if ($this->mysqli === null) {
+            return false; // Se não há conexão com o DB, retornamos falso
+        }
 
-        if (!$stmt) {
+        $sql = "SELECT * FROM pacientes WHERE cpf = ?";
+        $stmt = $this->mysqli->stmt_init();
+
+        if (!$stmt->prepare($sql)) {
             die("Erro de conexão com o DB!");
         }
 
-        $stmt->bind_param('s', $cpf);
+        $stmt->bind_param("s", $cpf); // Previne SQL injection
         $stmt->execute();
+
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
+
         $stmt->close();
 
         return isset($row["id"]);
     }
 
+    // Retorna o ID do paciente pelo CPF (quando a conexão com o DB for passada)
     public function idCpf($cpf)
     {
-        $sql = "SELECT id FROM pacientes WHERE cpf = ?";
-        $stmt = $this->mysqli->prepare($sql);
+        if ($this->mysqli === null) {
+            return null; // Se não há conexão com o DB, retornamos null
+        }
 
-        if (!$stmt) {
+        $sql = "SELECT id FROM pacientes WHERE cpf = ?";
+        $stmt = $this->mysqli->stmt_init();
+
+        if (!$stmt->prepare($sql)) {
             die("Erro de conexão com o DB!");
         }
 
-        $stmt->bind_param('s', $cpf);
+        $stmt->bind_param("s", $cpf); // Previne SQL injection
         $stmt->execute();
+
         $result = $stmt->get_result();
         $row = $result->fetch_assoc();
+
         $stmt->close();
 
         return isset($row["id"]) ? $row["id"] : null;
     }
 }
-
