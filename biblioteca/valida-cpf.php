@@ -30,3 +30,55 @@ function validarCPF($cpf)
 
   return true;
 }
+
+function existeCpf($cpf)
+{
+  $mysqli = require dirname(__DIR__) . "/auth/database.php";
+
+  $sql = "SELECT * FROM pacientes WHERE cpf =" . $cpf;
+
+  $stmt = $mysqli->stmt_init();
+
+  if (!$stmt->prepare($sql)) {
+    die("Erro de conexão com o DB!");
+  }
+
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  $row = $result->fetch_assoc();
+
+  $stmt->close();
+  
+  if (isset($row["id"])) {
+  return true;
+  } else {
+    return false;
+  }
+}
+
+function idCpf($cpf)
+{
+  $mysqli = require dirname(__DIR__) . "/auth/database.php";
+
+  $sql = "SELECT id FROM pacientes WHERE cpf =" . $cpf;
+
+  $stmt = $mysqli->stmt_init();
+
+  if (!$stmt->prepare($sql)) {
+    die("Erro de conexão com o DB!");
+  }
+
+  $stmt->execute();
+
+  $result = $stmt->get_result();
+
+  $row = $result->fetch_assoc();
+
+  $stmt->close();
+  
+  if (isset($row["id"])) {
+  return $row["id"];
+  }
+}

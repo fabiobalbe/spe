@@ -2,7 +2,6 @@
 require_once '../../auth/verifica.php';
 require_once "../../biblioteca/valida-cpf.php";
 require_once "../../biblioteca/valida-telefone.php";
-require_once "../../biblioteca/verifica-cpf.php";
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
 if (empty($_POST["id"])) {
@@ -43,7 +42,7 @@ if (empty($_POST["fator-rh"])) {
 }
 
 $idCpf = idCpf($_POST["cpf"]);
-
+$existeCpf = existeCpf($_POST["cpf"]);
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
 if (!empty($_POST["cpf"])) {
   if (!validarCPF($_POST["cpf"])) {
@@ -53,8 +52,12 @@ if (!empty($_POST["cpf"])) {
     header("Location: /paciente/editar/" . $_POST["id"] . "");
     exit;
   }
-  if ($idCpf == $_POST["id"]) {
-    die("idcpf e id é igual");
+  if ($existeCpf === true && $idCpf != $_POST["id"]) {
+    $_SESSION["mensagem-tipo"] = "neutro";
+    $_SESSION["mensagem-conteudo"] = "CPF já utilizado!";
+    $_SESSION["form_dados"] = $_POST;
+    header("Location: /paciente/editar/" . $_POST["id"] . "");
+    exit;
   }
 }
 if (!empty($_POST["email"])) {
