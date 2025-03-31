@@ -1,8 +1,4 @@
 <?php
-
-// Controle de acesso de importação de componente.
-require_once dirname(__DIR__) . '/auth/access_control.php';
-
 class CPFValidator
 {
     private $mysqli;
