@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const salvarBtn = document.getElementById("salvar-btn");
 
   // Lista de campos que serão validados
-  const fields = ["id", "nome", "data-nascimento", "sexo", "fator-rh", "cpf", "email", "tel"];
+  const fields = ["nome", "data-nascimento", "sexo", "fator-rh", "cpf", "email", "tel"];
 
   // Armazena os valores iniciais do formulário
   const initialData = new FormData(form);
@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isValid) return setValidationState(cpf, false);
 
       const existsResponse = await fetch(`../../api/api-existe-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
-      const { isValid: cpfExists } = await existsResponse.json();
-      setValidationState(cpf, !cpfExists);
+      const { existe: cpfExists } = await existsResponse.json();
+      if (cpfExists) return setValidationState(cpf, false);
     } catch (error) {
       console.error("Erro ao validar CPF:", error);
       setValidationState(cpf, false);
