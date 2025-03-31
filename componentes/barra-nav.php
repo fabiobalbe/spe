@@ -1,5 +1,7 @@
 <?php
+
 require_once dirname(__DIR__) . '/auth/access_control.php';
+
 ?>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid col-11">
@@ -16,7 +18,7 @@ require_once dirname(__DIR__) . '/auth/access_control.php';
           <a class="nav-link" href="/pacientes">Pacientes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pacientes/novo-paciente">Novo paciente</a>
+          <a class="nav-link" href="/pacientes/novo-paciente">Novo paciente</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/historico">Histórico de Consultas</a>
