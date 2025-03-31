@@ -1,5 +1,7 @@
 <?php
-require_once dirname(__DIR__) . '/auth/verifica.php';
+
+// Controle de acesso de importação de componente.
+require_once dirname(__DIR__) . '/auth/access_control.php';
 
 function validarTelefone($numero)
 {

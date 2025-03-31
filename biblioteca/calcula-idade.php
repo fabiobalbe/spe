@@ -1,5 +1,9 @@
   <?php
-  function calcularIdade($dataNascimento)
+  
+// Controle de acesso de importação de componente.
+require_once dirname(__DIR__) . '/auth/access_control.php';
+
+function calcularIdade($dataNascimento)
   {
     // Cria um objeto DateTime com a data de nascimento
     $nascimento = new DateTime($dataNascimento);
