@@ -4,6 +4,21 @@ require_once "../../biblioteca/valida-cpf.php";
 require_once "../../biblioteca/valida-telefone.php";
 $mysqli = require  "../../auth/database.php";
 
+//PASSA VARIAVEL POST PARA VÁRIAVEL MAIS FÁCIL DE COMPREENDER
+$nome = $_POST["nome"];
+$data_nascimento = $_POST["data-nascimento"];
+$sexo = $_POST["sexo"];
+$tipo_sanguineo = $_POST["fator-rh"];
+$cpf = $_POST["cpf"] ?? "";
+$email = $_POST["email"] ?? "";
+$telefone = $_POST["tel"] ?? "";
+$alergias = $_POST["alergias"] ?? "";
+$observacoes = $_POST["obs"] ?? "";
+$historico_medico = $_POST["historico"] ?? "";
+$ativo = 1;
+$id = $_POST["id"];
+$acao = $_POST["acao"];
+
 // VERIFICA CAMPOS OBRIGATÓRIOS
 // ID
 if (empty($_POST["id"])) {
@@ -94,81 +109,80 @@ if (!empty($_POST["tel"])) {
   }
 }
 
-//QUERY MYSQL
-$sql = "UPDATE pacientes
-        SET
-          nome = ?,
-          data_nascimento = ?,
-          telefone = ?,
-          email = ?,
-          sexo = ?,
-          cpf = ?,
-          tipo_sanguineo = ?,
-          alergias = ?,
-          historico_medico = ?,
-          observacoes = ?,
-          ativo = ?
-        WHERE id = ?
-        ";
+switch ($acao) {
+  case "salvar":
+    
+    //QUERY MYSQL
+    $sql = "UPDATE pacientes
+            SET
+              nome = ?,
+              data_nascimento = ?,
+              telefone = ?,
+              email = ?,
+              sexo = ?,
+              cpf = ?,
+              tipo_sanguineo = ?,
+              alergias = ?,
+              historico_medico = ?,
+              observacoes = ?,
+              ativo = ?
+            WHERE id = ?
+            ";
 
-//INICIA CONEXÃO
-$stmt = $mysqli->stmt_init();
+    //INICIA CONEXÃO
+    $stmt = $mysqli->stmt_init();
 
-//PROBLEMA NA CONEXÃO?
-if (!$stmt->prepare($sql)) {
-  $_SESSION["mensagem-tipo"] = "negativo";
-  $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
-  $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
-  exit;
+    //PROBLEMA NA CONEXÃO?
+    if (!$stmt->prepare($sql)) {
+      $_SESSION["mensagem-tipo"] = "negativo";
+      $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
+      $_SESSION["form_dados"] = $_POST;
+      header("Location: /paciente/editar/" . $_POST["id"] . "");
+      exit;
+    }
+
+    //BIND DE PARÂMETROS
+    $stmt->bind_param(
+      "ssssssssssii",  // Tipos dos dados
+      $nome,
+      $data_nascimento,
+      $telefone,
+      $email,
+      $sexo,
+      $cpf,
+      $tipo_sanguineo,
+      $alergias,
+      $historico_medico,
+      $observacoes,
+      $ativo,
+      $id
+    );
+
+    //EXECUTA QUERY COM SEGURANÇA
+    if ($stmt->execute()) {
+      //DEU CERTO?
+      unset($_SESSION["form_dados"]);
+      $_SESSION["mensagem-tipo"] = "positivo";
+      $_SESSION["mensagem-conteudo"] = "O cadastro de <strong>"
+        . $_POST["nome"]
+        . " </strong> foi atualizado com sucesso!";
+      header("Location: /paciente/editar/" . $_POST["id"] . "");
+      exit;
+    } else {
+      //DEU ERRADO?
+      $_SESSION["mensagem-tipo"] = "negativo";
+      $_SESSION["mensagem-conteudo"] = "Erro ao atualizar o cadastro do paciente: " . $stmt->error;
+      $_SESSION["form_dados"] = $_POST;
+      header("Location: /paciente/editar/" . $_POST["id"] . "");
+      exit;
+    }
+    break;
+
+  case "arquivar":
+    die("arquivar");
+    break;
+  case "excluir":
+    die("excluir");
+    break;
 }
 
-//PASSA VARIAVEL POST PARA VÁRIAVEL MAIS FÁCIL DE COMPREENDER
-$nome = $_POST["nome"];
-$data_nascimento = $_POST["data-nascimento"];
-$sexo = $_POST["sexo"];
-$tipo_sanguineo = $_POST["fator-rh"];
-$cpf = $_POST["cpf"] ?? "";
-$email = $_POST["email"] ?? "";
-$telefone = $_POST["tel"] ?? "";
-$alergias = $_POST["alergias"] ?? "";
-$observacoes = $_POST["obs"] ?? "";
-$historico_medico = $_POST["historico"] ?? "";
-$ativo = 1;
-$id = $_POST["id"];
-
-//BIND DE PARÂMETROS
-$stmt->bind_param(
-  "ssssssssssii",  // Tipos dos dados
-  $nome,
-  $data_nascimento,
-  $telefone,
-  $email,
-  $sexo,
-  $cpf,
-  $tipo_sanguineo,
-  $alergias,
-  $historico_medico,
-  $observacoes,
-  $ativo,
-  $id
-);
-
-//EXECUTA QUERY COM SEGURANÇA
-if ($stmt->execute()) {
-  //DEU CERTO?
-  unset($_SESSION["form_dados"]);
-  $_SESSION["mensagem-tipo"] = "positivo";
-  $_SESSION["mensagem-conteudo"] = "O cadastro de <strong>"
-    . $_POST["nome"]
-    . " </strong> foi atualizado com sucesso!";
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
-  exit;
-} else {
-  //DEU ERRADO?
-  $_SESSION["mensagem-tipo"] = "negativo";
-  $_SESSION["mensagem-conteudo"] = "Erro ao atualizar o cadastro do paciente: " . $stmt->error;
-  $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
-  exit;
-}
