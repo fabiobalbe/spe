@@ -44,7 +44,7 @@ if (!$row) {
   <div class="col-12 d-flex">
     <h2>Editar cadastro do paciente: <?php echo htmlspecialchars($row['nome']); ?></h2>
     <div class="d-flex ms-auto">
-      <button type="button" class="btn btn-outline-danger" onclick="history.back()">Descartar</button>
+    <a href="/paciente/<?php echo htmlspecialchars($idPaciente); ?>" class="btn btn-outline-danger d-flex align-items-center">Descartar</a>
     </div>
   </div>
 </div>
