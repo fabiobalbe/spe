@@ -1,26 +1,39 @@
 <?php
+
+// CONTROLE DE ACESSO
 require_once DIR_ABS . '/spe/auth/access_control.php';
 
+// CONEXÃO MYSQL
 $mysqli = require_once DIR_ABS . "/spe/auth/database.php";
 
+// QUERY
 $sql = "SELECT * FROM pacientes WHERE id = ?";
 
+// INICIALIZA A QUERY
 $stmt = $mysqli->stmt_init();
 
+// CONTROLE DE ERRO DE CONEXÃO
 if (!$stmt->prepare($sql)) {
   die("Erro de conexão com o DB!");
 }
 
+// BIND DE PARÂMETROS
 $stmt->bind_param("i", $idPaciente);
 
+// EXECUTA A QUERY
 $stmt->execute();
 
+// RECEBE OS RESULTADOS DA QUERY
 $result = $stmt->get_result();
 
+// PASSA OS DADOS PARA O ARRAY $ROW
 $row = $result->fetch_assoc();
 
+// FECHA A CONEXÃO
 $stmt->close();
+$mysqli->close();
 
+// CASO NÃO ENCONTRE NADA:
 if (!$row) {
   echo "Paciente não encontrado";
   exit;
@@ -42,14 +55,7 @@ if (!$row) {
   <div class="col-12 d-flex align-items-center mt-3">
     <form action="/paginas/editar/edita-paciente.php" method="POST" id="form-paciente" novalidate class="w-100">
       <input type="hidden" name="id" id="id" value="<?= htmlspecialchars($idPaciente) ?>">
-      <?php
-      function getFormData($campo, $default = '')
-      {
-        return isset($_SESSION['form_dados'][$campo]) ?
-          htmlspecialchars($_SESSION['form_dados'][$campo]) : $default;
-      }
 
-      ?>
       <!-- Primeira Linha -->
       <div class="row g-2">
         <div class="col-6">
@@ -124,7 +130,7 @@ if (!$row) {
             id="cpf"
             name="cpf"
             placeholder="000.000.000-00"
-            value="<?php echo htmlspecialchars($row['cpf']);; ?>">
+            value="<?php echo htmlspecialchars($row['cpf']); ?>">
           <div class="invalid-feedback">
             CPF inválido!
           </div>
