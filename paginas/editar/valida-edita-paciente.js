@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("form-paciente");
   const salvarBtn = document.getElementById("salvar-btn");
+  let clickedButton = null; // Variável para armazenar o botão clicado
 
   // Lista de campos que serão validados
   const fields = ["id", "nome", "data-nascimento", "sexo", "fator-rh", "cpf", "email", "tel"];
@@ -11,9 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Função para verificar se houve alterações no formulário
   const checkFormChanges = () => {
     const currentData = new FormData(form);
-    // Verifica se algum campo teve seu valor alterado
     const formChanged = [...initialData.entries()].some(([key, value]) => currentData.get(key) !== value);
-    // Habilita o botão somente se houver mudanças e se o formulário for válido
     salvarBtn.disabled = !(formChanged && form.checkValidity());
   };
 
@@ -36,26 +35,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Validação do CPF com verificações assíncronas
   const validateCPF = async (cpf, id) => {
     if (!cpf.value.trim()) return setValidationState(cpf, true);
-
     try {
-      // Verifica com a API se o CPF é válido
       const cpfResponse = await fetch(`../../api/api-valida-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
       const { isValid } = await cpfResponse.json();
-
-      // Condiciona a reposta da API
       if (!isValid) return setValidationState(cpf, false);
 
-      // Verifica com API se o CPF já está cadastrado
       const existsResponse = await fetch(`../../api/api-existe-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
       const { existe: cpfExists } = await existsResponse.json();
 
-      // Verifica com API se CPF já pertence ao usuário
       const idResponse = await fetch(`../../api/api-id-cpf.php?cpf=${encodeURIComponent(cpf.value)}`);
       const { id: existingId } = await idResponse.json();
 
-      // Condiciona as respostas da API
       if (cpfExists && existingId != id.value) return setValidationState(cpf, false);
-
     } catch (error) {
       console.error("Erro ao validar CPF:", error);
       setValidationState(cpf, false);
@@ -64,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Validação de email apenas se estiver preenchido
   const validateEmail = (email) => {
-    if (!email.value.trim()) return setValidationState(email, true); // Se estiver vazio, é válido
+    if (!email.value.trim()) return setValidationState(email, true);
     return validateField(email, /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email.value));
   };
 
@@ -81,6 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Captura o botão clicado
+  form.querySelectorAll('button[type="submit"]').forEach(button => {
+    button.addEventListener('click', (e) => {
+      clickedButton = e.target; // Armazena o botão clicado
+    });
+  });
+
   // Evento acionado ao submeter o formulário
   form.addEventListener("submit", async (event) => {
     event.preventDefault(); // Impede o envio imediato do formulário
@@ -89,11 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const elements = Object.fromEntries(fields.map(id => [id, document.getElementById(id)]));
 
     let isValid = true;
-    isValid &= validateField(elements.nome, elements.nome.value.trim().length >= 3); // Nome com pelo menos 3 caracteres
-    isValid &= validateField(elements["data-nascimento"], !!elements["data-nascimento"].value); // Data de nascimento preenchida
-    isValid &= validateField(elements.sexo, elements.sexo.value !== ""); // Sexo selecionado
-    isValid &= validateField(elements["fator-rh"], elements["fator-rh"].value !== ""); // Fator RH selecionado
-    validateEmail(elements.email); // Apenas valida se estiver preenchido
+    isValid &= validateField(elements.nome, elements.nome.value.trim().length >= 3);
+    isValid &= validateField(elements["data-nascimento"], !!elements["data-nascimento"].value);
+    isValid &= validateField(elements.sexo, elements.sexo.value !== "");
+    isValid &= validateField(elements["fator-rh"], elements["fator-rh"].value !== "");
+    validateEmail(elements.email);
 
     // Validações assíncronas (CPF e telefone)
     await Promise.all([
@@ -101,8 +99,19 @@ document.addEventListener("DOMContentLoaded", () => {
       validateTel(elements.tel)
     ]);
 
-    // Se todas as validações passarem, submete o formulário
-    if (isValid) form.submit();
-    else form.classList.add("was-validated");
+    // Se todas as validações passarem, adiciona o valor do botão clicado e submete
+    if (isValid) {
+      if (clickedButton) {
+        const acao = clickedButton.value; // Pega o valor do botão clicado
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'acao';
+        hiddenInput.value = acao;
+        form.appendChild(hiddenInput); // Adiciona ao formulário
+      }
+      form.submit(); // Envia o formulário
+    } else {
+      form.classList.add("was-validated");
+    }
   });
 });
