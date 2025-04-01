@@ -5,106 +5,106 @@ require_once "../../biblioteca/valida-telefone.php";
 $mysqli = require  "../../auth/database.php";
 
 //PASSA VARIAVEL POST PARA VÁRIAVEL MAIS FÁCIL DE COMPREENDER
-$nome = $_POST["nome"];
-$data_nascimento = $_POST["data-nascimento"];
-$sexo = $_POST["sexo"];
-$tipo_sanguineo = $_POST["fator-rh"];
-$cpf = $_POST["cpf"] ?? "";
-$email = $_POST["email"] ?? "";
-$telefone = $_POST["tel"] ?? "";
-$alergias = $_POST["alergias"] ?? "";
-$observacoes = $_POST["obs"] ?? "";
-$historico_medico = $_POST["historico"] ?? "";
+$nome = htmlspecialchars($_POST["nome"] ?? "");
+$data_nascimento = htmlspecialchars($_POST["data-nascimento"] ?? "");
+$sexo = htmlspecialchars($_POST["sexo"] ?? "");
+$tipo_sanguineo = htmlspecialchars($_POST["fator-rh"] ?? "");
+$cpf = htmlspecialchars($_POST["cpf"] ?? "");
+$email = htmlspecialchars($_POST["email"] ?? "");
+$telefone = htmlspecialchars($_POST["tel"] ?? "");
+$alergias = htmlspecialchars($_POST["alergias"] ?? "");
+$observacoes = htmlspecialchars($_POST["obs"] ?? "");
+$historico_medico = htmlspecialchars($_POST["historico"] ?? "");
 $ativo = 1;
-$id = $_POST["id"];
-$acao = $_POST["acao"];
+$id = htmlspecialchars($_POST["id"] ?? "");
+$acao = htmlspecialchars($_POST["acao"] ?? "");
 
 // VERIFICA CAMPOS OBRIGATÓRIOS
 // ID
-if (empty($_POST["id"])) {
+if (empty($id)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Ocorreu um problema.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
+  header("Location: /paciente/editar/" . $id);
   exit;
 }
 
 //NOME
-if (empty($_POST["nome"])) {
+if (empty($nome)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Nome deve ter ao menos 3 caracteres.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
+  header("Location: /paciente/editar/" . $id);
   exit;
 }
 
 //DATA DE NASCIMENTO
-if (empty($_POST["data-nascimento"])) {
+if (empty($data_nascimento)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong>Faltou a data de nascimento.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
+  header("Location: /paciente/editar/" . $id);
   exit;
 }
 
 //SEXO
-if (empty($_POST["sexo"])) {
+if (empty($sexo)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong> Faltou informar o sexo";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
+  header("Location: /paciente/editar/" . $id);
   exit;
 }
 
 //FATOR-RH
-if (empty($_POST["fator-rh"])) {
+if (empty($tipo_sanguineo)) {
   $_SESSION["mensagem-tipo"] = "negativo";
   $_SESSION["mensagem-conteudo"] = "<strong>Erro!: </strong> Faltou informar o Tipo Sanguíneo.";
   $_SESSION["form_dados"] = $_POST;
-  header("Location: /paciente/editar/" . $_POST["id"] . "");
+  header("Location: /paciente/editar/" . $id);
   exit;
 }
 
 // VERIFICA VALIDADE DE CAMPOS OPCIONAIS
 // CPF
-if (!empty($_POST["cpf"])) {
+if (!empty($cpf)) {
   $cpfValidator = new CPFValidator($mysqli);
   //CPF VALIDO?
-  if (!$cpfValidator->validarCPF($_POST["cpf"])) {
+  if (!$cpfValidator->validarCPF($cpf)) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF inválido!";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/editar/" . $_POST["id"] . "");
+    header("Location: /paciente/editar/" . $id);
     exit;
   }
   // CPF EXISTE E NÃO PERTENCE AO ID?
-  if ($cpfValidator->existeCpf($_POST["cpf"]) === true && $cpfValidator->idCpf($_POST["cpf"]) != $_POST["id"]) {
+  if ($cpfValidator->existeCpf($cpf) === true && $cpfValidator->idCpf($cpf) != $id) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "CPF já utilizado!";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/editar/" . $_POST["id"] . "");
+    header("Location: /paciente/editar/" . $id);
     exit;
   }
 }
 
 //EMAIL
-if (!empty($_POST["email"])) {
-  if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+if (!empty($email)) {
+  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "Endereço de e-mail incorreto.";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/editar/" . $_POST["id"] . "");
+    header("Location: /paciente/editar/" . $id);
     exit;
   }
 }
 
 //TELEFONE
-if (!empty($_POST["tel"])) {
-  if (!validarTelefone($_POST["tel"])) {
+if (!empty($telefone)) {
+  if (!validarTelefone($telefone)) {
     $_SESSION["mensagem-tipo"] = "neutro";
     $_SESSION["mensagem-conteudo"] = "Telefone incorreto.";
     $_SESSION["form_dados"] = $_POST;
-    header("Location: /paciente/editar/" . $_POST["id"] . "");
+    header("Location: /paciente/editar/" . $id);
     exit;
   }
 }
@@ -137,7 +137,7 @@ switch ($acao) {
       $_SESSION["mensagem-tipo"] = "negativo";
       $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
       $_SESSION["form_dados"] = $_POST;
-      header("Location: /paciente/editar/" . $_POST["id"] . "");
+      header("Location: /paciente/editar/" . $id);
       exit;
     }
 
@@ -164,16 +164,21 @@ switch ($acao) {
       unset($_SESSION["form_dados"]);
       $_SESSION["mensagem-tipo"] = "positivo";
       $_SESSION["mensagem-conteudo"] = "O cadastro de <strong>"
-        . $_POST["nome"]
+        . $nome
         . " </strong> foi atualizado com sucesso!";
-      header("Location: /paciente/editar/" . $_POST["id"] . "");
+      header("Location: /paciente/editar/" . $id);
+      // Fecha recursos
+      $stmt->close();
+      $mysqli->close();
       exit;
     } else {
       //DEU ERRADO?
       $_SESSION["mensagem-tipo"] = "negativo";
       $_SESSION["mensagem-conteudo"] = "Erro ao atualizar o cadastro do paciente: " . $stmt->error;
       $_SESSION["form_dados"] = $_POST;
-      header("Location: /paciente/editar/" . $_POST["id"] . "");
+      header("Location: /paciente/editar/" . $id);
+      $stmt->close();
+      $mysqli->close();
       exit;
     }
     break;
