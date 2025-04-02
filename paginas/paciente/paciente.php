@@ -51,13 +51,13 @@ if (!$row) {
   <div class="col-6 d-flex">
     <div class="card w-100 d-flex">
       <div class="card-body">
-        <h4>
+        <h4 class="d-flex align-items-center">
           <?php echo htmlspecialchars($row['nome']);
           if ($row['ativo'] == true) {
-            echo "<span class=\"badge text-bg-primary\">Ativo</span>";
+            echo "<span class=\"badge text-bg-primary ms-3\">Ativo</span>";
           } else {
 
-            echo "<span class=\"badge text-bg-secondary\">Arquivado</span>";
+            echo "<span class=\"badge text-bg-secondary ms-3\">Arquivado</span>";
           }
           ?>
         </h4>
