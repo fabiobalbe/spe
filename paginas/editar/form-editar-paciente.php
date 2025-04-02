@@ -44,7 +44,7 @@ if (!$row) {
   <div class="col-12 d-flex">
     <h2>Editar cadastro do paciente: <?php echo htmlspecialchars($row['nome']); ?></h2>
     <div class="d-flex ms-auto">
-    <a href="/paciente/<?php echo htmlspecialchars($idPaciente); ?>" class="btn btn-outline-danger d-flex align-items-center">Descartar</a>
+      <a href="/paciente/<?php echo htmlspecialchars($idPaciente); ?>" class="btn btn-outline-danger d-flex align-items-center">Descartar</a>
     </div>
   </div>
 </div>
@@ -198,8 +198,19 @@ if (!$row) {
       <!-- Botões -->
       <div class="row mt-5 g-2">
         <div class="col-6">
-          <button type="submit" class="btn w-30 btn-outline-success" name="acao" value="salvar" id="salvar-btn" disabled>Salvar alterações</button>
-          <button type="submit" class="btn w-30 btn-outline-warning" name="acao" value="arquivar">Arquivar cadastro</button>
+
+          <?php if ($row["ativo"] === 1) { ?>
+            <button type="submit" class="btn w-30 btn-outline-success" name="acao" value="salvar" id="salvar-btn" disabled>Salvar alterações</button>
+          <?php } ?>
+
+          <?php if ($row["ativo"] === 1) { ?>
+            <button type="submit" class="btn w-30 btn-outline-warning" name="acao" value="arquivar">Arquivar cadastro</button>
+          <?php } ?>
+
+          <?php if ($row["ativo"] === 0) { ?>
+            <button type="submit" class="btn w-30 btn-outline-primary" name="acao" value="desarquivar">Desarquivar</button>
+          <?php } ?>
+
           <button type="submit" class="btn w-30 btn-outline-danger" name="acao" value="excluir">Excluir cadastro</button>
         </div>
       </div>
