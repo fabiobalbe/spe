@@ -235,6 +235,60 @@ switch ($acao) {
       exit;
     }
     break;
+
+  case "desarquivar":
+    $ativo = 1;
+    //QUERY MYSQL
+    $sql = "UPDATE pacientes
+            SET
+              ativo = ?
+            WHERE id = ?
+            ";
+
+    //INICIA CONEXÃO
+    $stmt = $mysqli->stmt_init();
+
+    //PROBLEMA NA CONEXÃO?
+    if (!$stmt->prepare($sql)) {
+      $_SESSION["mensagem-tipo"] = "negativo";
+      $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
+      $_SESSION["form_dados"] = $_POST;
+      header("Location: /paciente/editar/" . $id);
+      exit;
+    }
+
+    //BIND DE PARÂMETROS
+    $stmt->bind_param(
+      "ii",  // Tipos dos dados
+      $ativo,
+      $id
+    );
+
+    //EXECUTA QUERY COM SEGURANÇA
+    if ($stmt->execute()) {
+      //DEU CERTO?
+      unset($_SESSION["form_dados"]);
+      $_SESSION["mensagem-tipo"] = "positivo";
+      $_SESSION["mensagem-conteudo"] = "O desarquivamento do cadastro de <strong>"
+        . $nome
+        . " </strong> foi realizado com sucesso!";
+      header("Location: /paciente/editar/" . $id);
+      // Fecha recursos
+      $stmt->close();
+      $mysqli->close();
+      exit;
+    } else {
+      //DEU ERRADO?
+      $_SESSION["mensagem-tipo"] = "negativo";
+      $_SESSION["mensagem-conteudo"] = "Erro ao desarquivar o cadastro: " . $stmt->error;
+      $_SESSION["form_dados"] = $_POST;
+      header("Location: /paciente/editar/" . $id);
+      $stmt->close();
+      $mysqli->close();
+      exit;
+    }
+    break;
+
   case "excluir":
     //QUERY MYSQL
     $sql = "DELETE FROM pacientes
