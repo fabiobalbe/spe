@@ -236,7 +236,51 @@ switch ($acao) {
     }
     break;
   case "excluir":
-    die("excluir");
+    //QUERY MYSQL
+    $sql = "DELETE FROM pacientes
+            WHERE id = ?
+            ";
+
+    //INICIA CONEXÃO
+    $stmt = $mysqli->stmt_init();
+
+    //PROBLEMA NA CONEXÃO?
+    if (!$stmt->prepare($sql)) {
+      $_SESSION["mensagem-tipo"] = "negativo";
+      $_SESSION["mensagem-conteudo"] = "<strong>Erro SQL: </strong>" . $mysqli->error;
+      $_SESSION["form_dados"] = $_POST;
+      header("Location: /paciente/editar/" . $id);
+      exit;
+    }
+
+    //BIND DE PARÂMETROS
+    $stmt->bind_param(
+      "i",  // Tipos dos dados
+      $id
+    );
+
+    //EXECUTA QUERY COM SEGURANÇA
+    if ($stmt->execute()) {
+      //DEU CERTO?
+      unset($_SESSION["form_dados"]);
+      $_SESSION["mensagem-tipo"] = "neutro";
+      $_SESSION["mensagem-conteudo"] = "<strong>". $nome .
+        "</strong> foi excluído do cadastro de pacientes";
+      header("Location: /pacientes");
+      // Fecha recursos
+      $stmt->close();
+      $mysqli->close();
+      exit;
+    } else {
+      //DEU ERRADO?
+      $_SESSION["mensagem-tipo"] = "negativo";
+      $_SESSION["mensagem-conteudo"] = "Erro ao excluir o cadastro: " . $stmt->error;
+      $_SESSION["form_dados"] = $_POST;
+      header("Location: /paciente/editar/" . $id);
+      $stmt->close();
+      $mysqli->close();
+      exit;
+    }
     break;
 }
 
