@@ -52,6 +52,7 @@ if (!$row) {
     <div class="card w-100 d-flex">
       <div class="card-body">
 <<<<<<< HEAD
+<<<<<<< HEAD
           <h4 class="d-flex align-items-center">
             <?php echo htmlspecialchars($row['nome']); ?>
             <span class="badge text-bg-primary ms-3">
@@ -65,6 +66,8 @@ if (!$row) {
             </span>
           </h4>
 =======
+=======
+>>>>>>> parent of d9fb21d (adiciona o badge de status do nome)
 
         <h4>
           <?php echo htmlspecialchars($row['nome']);
@@ -76,6 +79,9 @@ if (!$row) {
           }
           ?>
         </h4>
+<<<<<<< HEAD
+>>>>>>> parent of d9fb21d (adiciona o badge de status do nome)
+=======
 >>>>>>> parent of d9fb21d (adiciona o badge de status do nome)
         </br>
 
