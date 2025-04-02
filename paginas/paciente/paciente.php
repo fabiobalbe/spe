@@ -64,6 +64,7 @@ if (!$row) {
             </span>
           </h4>
         </br>
+
         <p>
           <strong>
             <small class="text-body-secondary">Idade: </small>
