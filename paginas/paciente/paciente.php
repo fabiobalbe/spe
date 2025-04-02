@@ -51,19 +51,18 @@ if (!$row) {
   <div class="col-6 d-flex">
     <div class="card w-100 d-flex">
       <div class="card-body">
-        <div class="w100 d-flex align-items-center">
-          <h4 class="mt-1">
-            <?php echo htmlspecialchars($row['nome']);
-
-            if ($row['ativo'] == true) {
-              echo "<span class=\"badge text-bg-primary ms-2\">Ativo</span>";
-            } else {
-
-              echo "<span class=\"badge text-bg-secondary ms-2\">Arquivado</span>";
-            }
-            ?>
+          <h4 class="d-flex align-items-center">
+            <?php echo htmlspecialchars($row['nome']); ?>
+            <span class="badge text-bg-primary ms-3">
+              <?php
+              if ($row['ativo'] == true) {
+                echo "Ativo";
+              } else {
+                echo "Arquivado";
+              }
+              ?>
+            </span>
           </h4>
-        </div>
         </br>
         <p>
           <strong>
