@@ -44,8 +44,14 @@ $router->add("/paciente/editar/:id", function ($id) {
 
 
 //NOVA CONSULTA
-$router->add("/consultas/nova-consulta", function () {
-  echo "Nova Consulta";
+$router->add("/consultas/nova-consulta/:id", function ($id) {
+  if (!ctype_digit($id) || $id <= 0) {
+    header("HTTP/1.0 400 Bad Request");
+    echo "ID do paciente deve ser um número inteiro positivo";
+    exit;
+  }
+  $idPaciente = (int)$id; // Força conversão para inteiro
+  include_once dirname(__DIR__) . '/spe/paginas/nova-consulta/form-nova-consulta.php';
 }, "Nova Consulta");
 
 
