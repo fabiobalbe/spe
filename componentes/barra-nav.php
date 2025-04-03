@@ -21,7 +21,7 @@ require_once dirname(__DIR__) . '/auth/access_control.php';
           <a class="nav-link" href="/pacientes/novo-paciente">Novo paciente</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/historico">Histórico de Consultas</a>
+          <a class="nav-link" href="/consultas/nova-consulta">Nova Consulta</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/signup">Criar novo usuário</a>
