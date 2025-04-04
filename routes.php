@@ -43,6 +43,12 @@ $router->add("/paciente/editar/:id", function ($id) {
 }, "Página de edição de paciente");
 
 
+//Nova consulta
+$router->add("/consultas/nova-consulta/", function () {
+  echo "nova";
+}, "Historico de consultas");
+
+
 //NOVA CONSULTA
 $router->add("/consultas/nova-consulta/:id", function ($id) {
   if (!ctype_digit($id) || $id <= 0) {
